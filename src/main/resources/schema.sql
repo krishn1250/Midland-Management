@@ -21,7 +21,8 @@ CREATE TABLE sections (
                           grade VARCHAR(10) NOT NULL,
                           section_name VARCHAR(10) NOT NULL,
                           academic_year VARCHAR(20) NOT NULL,
-                          class_teacher_uuid VARCHAR(255)
+                          class_teacher_uuid VARCHAR(255),
+                          FOREIGN KEY (class_teacher_uuid) REFERENCES users(uuid)
 );
 
 -- Create Teachers table
@@ -81,9 +82,17 @@ CREATE TABLE attendance (
                             date DATE NOT NULL,
                             status VARCHAR(20) NOT NULL CHECK (status IN ('PRESENT', 'ABSENT', 'LATE', 'EXCUSED')),
                             marked_by_teacher_uuid VARCHAR(255),
-                            timestamp_marked TIMESTAMP,
+                            timestamp_marked TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             remarks TEXT,
                             FOREIGN KEY (timetable_id) REFERENCES timetables(timetable_id),
                             FOREIGN KEY (student_uuid) REFERENCES students(suuid),
+                            FOREIGN KEY (marked_by_teacher_uuid) REFERENCES teachers(tuuid),
                             UNIQUE(timetable_id, student_uuid, date)
 );
+
+-- Create indexes for better performance
+CREATE INDEX idx_students_section_id ON students(section_id);
+CREATE INDEX idx_students_roll_number ON students(roll_number);
+CREATE INDEX idx_timetables_section_day ON timetables(section_id, day_of_week);
+CREATE INDEX idx_attendance_date ON attendance(date);
+CREATE INDEX idx_attendance_student_date ON attendance(student_uuid, date);

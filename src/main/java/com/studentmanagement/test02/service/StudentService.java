@@ -1,5 +1,7 @@
 package com.studentmanagement.test02.service;
 
+import com.studentmanagement.test02.dto.SectionDTO;
+import com.studentmanagement.test02.dto.StudentDTO;
 import com.studentmanagement.test02.model.Student;
 import com.studentmanagement.test02.repo.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,26 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> getAllStudents(){
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents(){
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream()
+                .map(student -> new StudentDTO(
+                        student.getSuuid(),
+                        student.getName(),
+                        student.getRollNumber(),
+                        student.getDateOfBirth(),
+                        student.getEmail(),
+                        student.getPhone(),
+                        student.getAddress(),
+                        student.getAdmissionDate(),
+                        new SectionDTO(
+                                student.getSection().getSectionId(),
+                                student.getSection().getGrade(),
+                                student.getSection().getSectionName(),
+                                student.getSection().getAcademicYear()
+                        )
+                ))
+                .toList();
     }
 }

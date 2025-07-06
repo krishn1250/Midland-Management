@@ -1,6 +1,7 @@
 package com.studentmanagement.test02.controller;
 
 import com.studentmanagement.test02.dto.AttendanceDTO;
+import com.studentmanagement.test02.dto.AttendanceStatsDTO;
 import com.studentmanagement.test02.service.AttendanceService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +20,9 @@ public class Hello {
     @GetMapping("/yo")
     public List<AttendanceDTO> hello(){
         return attendanceService.getStudentAttendanceForDate("student-001", LocalDate.of(2024,7,1));
+    }
+    @GetMapping("/yos")
+    public AttendanceStatsDTO hello2(){
+        return attendanceService.getStudentAttendanceStats("student-002");
     }
 }

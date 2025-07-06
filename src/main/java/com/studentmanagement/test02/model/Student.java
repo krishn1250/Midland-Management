@@ -30,7 +30,7 @@ public class Student {
     private LocalDate admissionDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "section_id")
+    @JoinColumn(name = "section_id", referencedColumnName = "sectionId")
     private Section section;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

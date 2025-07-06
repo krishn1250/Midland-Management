@@ -10,6 +10,7 @@ import java.util.List;
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sectionId") // Explicitly specify column name
     private Long sectionId;
 
     @Column(nullable = false)
