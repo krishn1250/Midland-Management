@@ -38,6 +38,9 @@ public class JwtTokenProvider {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+    public Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody();
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -74,6 +77,13 @@ public class JwtTokenProvider {
         return extractExpiration(token).before(new Date());
     }
 
+
     public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

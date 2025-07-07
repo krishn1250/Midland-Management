@@ -4,7 +4,7 @@ package com.school.midland.adminservice.controller;
 import com.school.midland.adminservice.dto.AdminLoginRequest;
 import com.school.midland.adminservice.dto.AdminSignupRequest;
 import com.school.midland.adminservice.dto.AuthResponse;
-import com.school.midland.adminservice.service.AuthService;
+import com.school.midland.adminservice.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/admin/auth")
+@RequestMapping("midland/admin/auth")
 @RequiredArgsConstructor
 public class AdminAuthController {
 

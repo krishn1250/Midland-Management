@@ -1,8 +1,12 @@
 package com.school.midland.adminservice.init;
 
 
+import com.school.midland.adminservice.client.dto.UserCreationRequest;
+import com.school.midland.adminservice.client.dto.UserCreationResponse;
+import com.school.midland.adminservice.client.service.UserServiceClient;
 import com.school.midland.adminservice.models.Admin;
 import com.school.midland.adminservice.repository.AdminRepository;
+import com.school.midland.constants.Role;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +23,7 @@ public class DefaultAdminInitializer {
     private final UserServiceClient userServiceClient;
     private final PasswordEncoder passwordEncoder;
 
-    @PostConstruct
+//    @PostConstruct
     public void createDefaultAdmin(){
         String defaultUsername = "admin";
         String defaultPassword = "admin123"; // Secure it in production!
@@ -37,13 +41,15 @@ public class DefaultAdminInitializer {
                 .username(defaultUsername)
                 .password(passwordEncoder.encode(defaultPassword))
                 .role(Role.ADMIN.name())
+                .email(defaultEmail)
                 .associatedIdentifier(associatedIdentifier)
                 .build();
 
-        UUID userResp = userServiceClient.createUser(userReq);
+        UserCreationResponse userResp = userServiceClient.createUser(userReq);
+        System.out.println(userResp);
         Admin admin = Admin.builder()
                 .adminUid(adminUid)
-                .userUid(userResp)
+                .userUid(userResp.getUserUid())
                 .username(defaultUsername)
                 .password(passwordEncoder.encode(defaultPassword))
                 .fullName("Default Admin")

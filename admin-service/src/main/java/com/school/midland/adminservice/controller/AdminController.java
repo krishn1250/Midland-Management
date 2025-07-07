@@ -2,7 +2,7 @@ package com.school.midland.adminservice.controller;
 
 
 import com.school.midland.adminservice.dto.AdminDto;
-import com.school.midland.adminservice.service.AdminService;
+import com.school.midland.adminservice.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package com.school.midland.adminservice.service;
+package com.school.midland.adminservice.service.auth;
 
 import com.school.midland.adminservice.dto.AdminLoginRequest;
 import com.school.midland.adminservice.dto.AdminSignupRequest;

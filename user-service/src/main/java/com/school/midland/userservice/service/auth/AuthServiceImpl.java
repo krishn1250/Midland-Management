@@ -8,6 +8,7 @@ import com.school.midland.userservice.models.User;
 import com.school.midland.userservice.repository.UserRepository;
 import com.school.midland.userservice.security.JwtTokenProvider;
 import com.school.midland.userservice.service.UserDetailsServiceImpl;
+import com.school.midland.utils.UuidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,18 +28,20 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
+
     @Override
     public AuthResponse signup(SignupRequest request) {
         Optional<UserDetails> existing = userRepository.findByUsername(request.getUsername());
         if (existing.isPresent()) {
             throw new RuntimeException("Username already exists");
         }
-
+    UUID userUid= UuidGenerator.generate();
         User user=User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .userUid(userUid)
 //                .role(Role.valueOf(request.getRole().toUpperCase()))
-                .role(Role.valueOf("STUDENT"))
+                .role(Role.valueOf(request.getRole()))
                 .Email(request.getEmail())
                 .associatedIdentifier(request.getAssociatedIdentifier())
                 .userUid(UUID.randomUUID()).
@@ -48,7 +51,8 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         String token = jwtTokenProvider.generateToken(userDetails);
         return AuthResponse.builder().token(token).role(""+user.getRole())
-                .message("Success").build();
+                .message("Success").Username(user.getUsername()).userUid(user.getUserUid())
+        .build();
     }
 
     @Override

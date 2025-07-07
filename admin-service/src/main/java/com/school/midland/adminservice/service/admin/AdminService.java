@@ -1,4 +1,4 @@
-package com.school.midland.adminservice.service;
+package com.school.midland.adminservice.service.admin;
 
 
 import com.school.midland.adminservice.dto.AdminDto;

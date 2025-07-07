@@ -28,11 +28,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/midland/auth/signup", "/midland/auth/signin").permitAll()
+                        // Allow admin-service to create default admin user temporarily
+                        .requestMatchers("/midland/auth/signup").permitAll()  // ⛳ TEMPORARY - allow internal bootstrapping
 
-                                // All others require auth
-                                .anyRequest().authenticated()
-//                        .requestMatchers("/midland/**").permitAll()
+                        // Allow anyone to sign in
+                        .requestMatchers("/midland/auth/signin").permitAll()
+
+                        // All other requests must be authenticated
+                        .anyRequest().authenticated()
 
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

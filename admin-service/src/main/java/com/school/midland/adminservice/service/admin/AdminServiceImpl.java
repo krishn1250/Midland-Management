@@ -1,12 +1,15 @@
-package com.school.midland.adminservice.service;
+package com.school.midland.adminservice.service.admin;
 
 
 import com.school.midland.adminservice.client.dto.UserCreationRequest;
+import com.school.midland.adminservice.client.dto.UserCreationResponse;
 import com.school.midland.adminservice.client.service.UserServiceClient;
 import com.school.midland.adminservice.dto.AdminDto;
 import com.school.midland.adminservice.mapper.AdminMapper;
 import com.school.midland.adminservice.models.Admin;
 import com.school.midland.adminservice.repository.AdminRepository;
+import com.school.midland.constants.Role;
+import com.school.midland.utils.UuidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements  AdminService {
+public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
@@ -26,24 +29,24 @@ public class AdminServiceImpl implements  AdminService {
     @Override
     public AdminDto createAdmin(AdminDto dto) {
         if (dto == null) throw new IllegalArgumentException("Admin DTO is null");
-
-        UUID userUid = usersServiceClient.createUser(
+        UUID adminUid= UuidGenerator.generate();
+        UserCreationResponse userResp = usersServiceClient.createUser(
                 UserCreationRequest.builder()
                         .username(dto.getUserName())
                         .password(dto.getPassword())  // NOTE: Plain, user-service hashes
-                        .role("ADMIN")
+                        .role(Role.ADMIN.name())
                         .email(dto.getEmail())
                         .phoneNumber(dto.getPhoneNumber())
-                        .associatedIdentifier("admin") // or use adminUid after creation
+                        .associatedIdentifier("ADM"+adminUid.toString().substring(0,6)) // or use adminUid after creation
                         .build()
         );
-
         Admin admin = Admin.builder()
                 .fullName(dto.getFullName())
                 .firstName(dto.getFullName().split(" ")[0])
                 .lastName(dto.getFullName().split(" ").length > 1 ? dto.getFullName().split(" ")[1] : null)
                 .password(dto.getPassword())
                 .username(dto.getUserName())
+                .adminUid(adminUid)
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
                 .designation(dto.getDesignation())
@@ -60,11 +63,11 @@ public class AdminServiceImpl implements  AdminService {
 //                .associatedIdentifier(admin.getAdminUid().toString())
 //                .build();
 
-        admin.setUserUid(userUid);
+        admin.setUserUid(userResp.getUserUid());
         admin = adminRepository.save(admin);
 
-        dto.setAdminUid(admin.getAdminUid());
-        dto.setUserUid(userUid);
+dto.setAdminUid(admin.getAdminUid());
+        dto.setUserUid(userResp.getUserUid());
         return dto;
 
 

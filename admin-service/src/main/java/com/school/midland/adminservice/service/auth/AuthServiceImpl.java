@@ -1,7 +1,9 @@
-package com.school.midland.adminservice.service;
+package com.school.midland.adminservice.service.auth;
 
+import com.school.midland.adminservice.client.dto.UserCreationRequest;
+import com.school.midland.adminservice.client.dto.UserCreationResponse;
 import com.school.midland.adminservice.client.service.UserServiceClient;
-import com.school.midland.adminservice.client.user.dto.UserCreationRequest;
+
 import com.school.midland.adminservice.dto.AdminLoginRequest;
 import com.school.midland.adminservice.dto.AdminSignupRequest;
 import com.school.midland.adminservice.dto.AuthResponse;
@@ -9,7 +11,8 @@ import com.school.midland.adminservice.mapper.AdminMapper;
 import com.school.midland.adminservice.models.Admin;
 import com.school.midland.adminservice.repository.AdminRepository;
 import com.school.midland.adminservice.security.JwtTokenProvider;
-import com.school.midland.common.utils.UuidGenerator;
+
+import com.school.midland.utils.UuidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,13 +55,13 @@ public class AuthServiceImpl implements AuthService {
                 .associatedIdentifier("ADM"+adminUid.toString().substring(0,6))
                 .build();
 
-        UUID userResp = usersServiceClient.createUser(userReq);
+        UserCreationResponse userResp = usersServiceClient.createUser(userReq);
 
 if(userResp==null){
     throw new RuntimeException("Unable to store in users table");
 }
         Admin admin =adminMapper.requesttoEntity(request);
-        admin.setUserUid(userResp);
+        admin.setUserUid(userResp.getUserUid());
         admin.setAdminUid(adminUid);
         Admin saved = adminRepository.save(admin);
 
