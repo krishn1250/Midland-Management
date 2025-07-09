@@ -1,3 +1,4 @@
+// --- File: model/AttendanceRecord.java ---
 package com.school.midland.userservice.model;
 
 import jakarta.persistence.*;
@@ -6,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate; // <-- Import this
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,8 +30,10 @@ public class AttendanceRecord {
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 
-    private LocalDateTime recordTimestamp;
+    private LocalDateTime recordTimestamp; // When the record was created/updated
+
+    @Column(name = "class_date") // <-- ADD THIS FIELD
+    private LocalDate classDate;     // The actual date of the class session
 
     private String remarks;
-
 }
