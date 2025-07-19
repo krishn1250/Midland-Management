@@ -2,25 +2,41 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="midland-shool-backend" />
+        <module name="auth-service (1)" />
         <module name="common-lib" />
         <module name="user-service" />
-        <module name="payment-gateway-service" />
-        <module name="admin-service" />
+        <module name="common-lib (1)" />
         <module name="notification-service" />
+        <module name="admin-service (1)" />
+        <module name="auth-service" />
+        <module name="payment-gateway-service (1)" />
+        <module name="payment-gateway-service" />
+        <module name="notification-service (1)" />
+        <module name="user-service (1)" />
+        <module name="admin-service" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="admin-service" options="-parameters" />
-      <module name="common-lib" options="-parameters" />
-      <module name="notification-service" options="-parameters" />
-      <module name="payment-gateway-service" options="-parameters" />
-      <module name="user-service" options="-parameters" />
+      <module name="admin-service" options="" />
+      <module name="admin-service (1)" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
+      <module name="auth-service (1)" options="-parameters" />
+      <module name="common-lib" options="" />
+      <module name="common-lib (1)" options="-parameters" />
+      <module name="notification-service" options="" />
+      <module name="notification-service (1)" options="-parameters" />
+      <module name="payment-gateway-service" options="" />
+      <module name="payment-gateway-service (1)" options="-parameters" />
+      <module name="user-service" options="" />
+      <module name="user-service (1)" options="-parameters" />
     </option>
   </component>
 </project>
