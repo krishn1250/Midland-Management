@@ -6,21 +6,84 @@ import com.school.midland.userservice.service.teacher.TeacherService;
 import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/midland/users/teacher")
+@RequestMapping("/midland/users/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
 
     private final TeacherService teacherService;
 
+    // Create teacher
     @PostMapping("/create")
-    public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto teacherDto){
-        final TeacherDto teacher = teacherService.createTeacher(teacherDto);
+    public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto teacherDto) {
+        TeacherDto saved = teacherService.createTeacher(teacherDto);
+        return ResponseEntity.ok(saved);
+    }
+
+    // Get teacher by DB id
+    @GetMapping("/{id}")
+    public ResponseEntity<TeacherDto> getById(@PathVariable Long id) {
+        TeacherDto teacher = teacherService.getTeacherById(id);
         return ResponseEntity.ok(teacher);
+    }
+
+    // Get teacher by UID
+    @GetMapping("/uid/{uid}")
+    public ResponseEntity<TeacherDto> getByUid(@PathVariable UUID uid) {
+        TeacherDto teacher = teacherService.getTeacherByUid(uid);
+        return ResponseEntity.ok(teacher);
+    }
+
+    // Get teacher by teacher code
+    @GetMapping("/code/{code}")
+    public ResponseEntity<TeacherDto> getByCode(@PathVariable String code) {
+        TeacherDto teacher = teacherService.getTeacherByCode(code);
+        return ResponseEntity.ok(teacher);
+    }
+
+    // Get all teachers
+    @GetMapping("/all")
+    public ResponseEntity<List<TeacherDto>> getAllTeachers() {
+        List<TeacherDto> list = teacherService.getAllTeachers();
+        return ResponseEntity.ok(list);
+    }
+
+    // Update teacher by teacher code
+    @PutMapping("/update/{code}")
+    public ResponseEntity<TeacherDto> updateTeacher(@PathVariable String code, @RequestBody TeacherDto dto) {
+        TeacherDto updated = teacherService.updateTeacher(code, dto);
+        return ResponseEntity.ok(updated);
+    }
+
+    // Delete teacher by id
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteTeacher(@PathVariable String username) {
+        Boolean deleted = teacherService.deleteTeacher(username);
+        return ResponseEntity.ok(deleted ? "Deleted Successfully" : "Not Found or Not Deleted");
+    }
+
+    // Find by department
+    @GetMapping("/department/{department}")
+    public ResponseEntity<List<TeacherDto>> getByDepartment(@PathVariable String department) {
+        List<TeacherDto> list = teacherService.findByDepartment(department);
+        return ResponseEntity.ok(list);
+    }
+
+    // Find by designation
+    @GetMapping("/designation/{designation}")
+    public ResponseEntity<List<TeacherDto>> getByDesignation(@PathVariable String designation) {
+        List<TeacherDto> list = teacherService.findByDesignation(designation);
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/username/{username}")
+    public  ResponseEntity<TeacherDto> getByUsername(@PathVariable String username){
+        TeacherDto byUsername = teacherService.getByUsername(username);
+        return ResponseEntity.ok(byUsername);
     }
 }

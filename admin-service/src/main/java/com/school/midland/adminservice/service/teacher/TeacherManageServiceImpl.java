@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +25,7 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
         System.out.println(teacherDto);
         if(teacherDto==null || teacherDto.getTeacherCode()==null
                 || teacherDto.getUsername()==null || teacherDto.getSchoolEmail()==null
-        || teacherDto.getPhoneNumber()==null){
-            throw new UserException("fill the necessary details ", HttpStatus.BAD_REQUEST);
+        || teacherDto.getPhoneNumber()==null){            throw new UserException("fill the necessary details ", HttpStatus.BAD_REQUEST);
         }
         UserCreationRequest userCreationRequest=UserCreationRequest.builder()
                 .role("TEACHER")
@@ -45,32 +45,65 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
     }
 
     @Override
-    public TeacherDto getTeacherById(Long id) {
-        return null;
+    public List<TeacherDto> getTeacherByDepartment(String department) {
+        if (department == null || department.trim().isEmpty()) {
+            throw new UserException("Teacher desiognation cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        return teacherServiceClient.getTeacherByDepartment(department);
     }
 
+
+
     @Override
-    public TeacherDto getTeacherByUid(UUID uid) {
-        return null;
+    public TeacherDto getTeacherByUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new UserException("Teacher desiognation cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        return teacherServiceClient.findByUsername(username);
     }
+
+//    @Override
+//    public TeacherDto getTeacherById(Long id) {
+//        if (id == null) {
+//            throw new UserException("Teacher ID cannot be null", HttpStatus.BAD_REQUEST);
+//        }
+//        return teacherServiceClient.;
+//    }
+
+//    @Override
+//    public TeacherDto getTeacherByUid(UUID uid) {
+//        if (uid == null) {
+//            throw new UserException("Teacher UID cannot be null", HttpStatus.BAD_REQUEST);
+//        }
+//        return teacherServiceClient.getTeacherByUid(uid);
+//    }
 
     @Override
     public TeacherDto getTeacherByCode(String teacherCode) {
-        return null;
+        if (teacherCode == null || teacherCode.trim().isEmpty()) {
+            throw new UserException("Teacher Code cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        return teacherServiceClient.getTeacherByCodeRest(teacherCode);
     }
 
     @Override
     public List<TeacherDto> getAllTeachers() {
-        return List.of();
+        return teacherServiceClient.getAllTeachersRest();
     }
 
     @Override
-    public List<TeacherDto> updateTeacher(String teacherCode, TeacherDto teacherDto) {
-        return List.of();
+    public TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto) {
+        if (teacherCode == null || teacherCode.isBlank()) {
+            throw new UserException("Teacher code must be provided for update", HttpStatus.BAD_REQUEST);
+        }
+        return teacherServiceClient.updateTeacherRest(teacherCode, teacherDto);
     }
 
     @Override
-    public boolean deleteTeacher(Long id) {
-        return false;
+    public boolean deleteTeacher(String username) {
+        if (username== null) {
+            throw new UserException("Teacher ID cannot be null for deletion", HttpStatus.BAD_REQUEST);
+        }
+        return teacherServiceClient.deleteTeacher(username);
     }
 }

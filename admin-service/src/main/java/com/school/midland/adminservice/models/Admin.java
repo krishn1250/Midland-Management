@@ -27,7 +27,7 @@ public class Admin {
     @Column(nullable = false, unique = true)
     private UUID userUid; // Foreign key to users(user_uid)
 
-    @Column(nullable = false)
+
     private String firstName;
 
     private String lastName;
@@ -36,7 +36,7 @@ public class Admin {
     private String username;
 
 
-    @Column(nullable = false)
+
     private String fullName;
 
     @Column(nullable = false, unique = true)

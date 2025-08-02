@@ -14,10 +14,14 @@ import java.util.UUID;
 public class AdminMapper {
     private final PasswordEncoder passwordEncoder;
     public Admin requesttoEntity(AdminDto request) {
-        String[] parts = request.getFullName().split(" ", 2);
+        String[] parts={"", ""};;
+        if(request.getFullName()!=null) {
+            parts = request.getFullName().split(" ", 2);
+        }
+
         return Admin.builder()
                 .adminUid(UUID.randomUUID())
-                .username(request.getUserName())
+                .username(request.getUsername())
                 .firstName(parts[0])
                 .lastName(parts.length>1 ? parts[1]:"")
                 .fullName(request.getFullName())
@@ -29,7 +33,7 @@ public class AdminMapper {
     }
     public AdminDto toDto(Admin admin) {
         return AdminDto.builder()
-                .userName(admin.getUsername())
+                .username(admin.getUsername())
                 .fullName(admin.getFullName())
                 .email(admin.getEmail())
                 .phoneNumber(admin.getPhoneNumber())

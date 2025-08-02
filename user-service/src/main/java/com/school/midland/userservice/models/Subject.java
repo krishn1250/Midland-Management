@@ -25,7 +25,7 @@ public class Subject {
     private String subjectName;
 
     @Column(nullable = false, unique = true)
-    private String code;
+    private String subjectCode;
 
     private String curriculumType;
 

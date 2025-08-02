@@ -1,13 +1,14 @@
 package com.school.midland.adminservice.client.service.student;
 
 import com.school.midland.commonlib.dtos.StudentDto;
+import com.school.midland.commonlib.exception.AdminException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -21,41 +22,48 @@ public class StudentServiceClientImpl implements  StudentServiceClient{
 
     @Override
     public StudentDto createUserRest(StudentDto studentDto) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("username", studentDto.getUsername());
-        payload.put("studentUid",studentDto.getStudentUid());
-        payload.put("password", studentDto.getPassword());
-        payload.put("firstName", studentDto.getFirstName());
-        payload.put("lastName", studentDto.getLastName());
-        payload.put("fullName", studentDto.getFullName());
-        payload.put("admissionNumber", studentDto.getAdmissionNumber());
-        payload.put("rollNo", studentDto.getRollNo());
-        payload.put("gender", studentDto.getGender());
-        payload.put("dateOfBirth", studentDto.getDateOfBirth());
-        payload.put("bloodGroup", studentDto.getBloodGroup());
-        payload.put("nationality", studentDto.getNationality());
-        payload.put("motherTongue", studentDto.getMotherTongue());
-        payload.put("languagePreference", studentDto.getLanguagePreference());
-        payload.put("gradeLevel", studentDto.getGradeLevel());
-        payload.put("section", studentDto.getSection());
-        payload.put("academicYear", studentDto.getAcademicYear());
-        payload.put("admissionDate", studentDto.getAdmissionDate());
-        payload.put("status", studentDto.getStatus());
-        payload.put("profileImage", studentDto.getProfileImage());
-        payload.put("address", studentDto.getAddress());
-        payload.put("city", studentDto.getCity());
-        payload.put("state", studentDto.getState());
-        payload.put("country", studentDto.getCountry());
-        payload.put("pinCode", studentDto.getPinCode());
-        payload.put("phoneNumber", studentDto.getPhoneNumber());
-        payload.put("schoolEmail", studentDto.getSchoolEmail());
-        payload.put("personalEmail", studentDto.getPersonalEmail());
-        payload.put("guardianName", studentDto.getGuardianName());
-        payload.put("guardianRelation", studentDto.getGuardianRelation());
-        payload.put("guardianContact", studentDto.getGuardianContact());
 
-        return restTemplate.postForObject(userServiceBaseUrl + "users/student/create", payload, StudentDto.class);
+        return restTemplate.postForObject(userServiceBaseUrl + "users/student/create", studentDto, StudentDto.class);
+    }
+    public List<StudentDto> getAllStudents() {
+        ResponseEntity<StudentDto[]> response = restTemplate.getForEntity(
+                userServiceBaseUrl + "users/student/all",
+                StudentDto[].class
+        );
+        System.out.println("hiited");
+        return response.getBody() != null ? Arrays.asList(response.getBody()) : new ArrayList<>();
+    }
 
+    public StudentDto getByAdmissionNumber(String admissionNumber) {
+        return restTemplate.getForObject(
+                userServiceBaseUrl + "users/student/admission/" + admissionNumber,
+                StudentDto.class
+        );
+    }
+
+    public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<StudentDto> request = new HttpEntity<>(updatedDto, headers);
+
+        ResponseEntity<StudentDto> response = restTemplate.exchange(
+                userServiceBaseUrl + "users/student/update/" + admissionNumber,
+                HttpMethod.PUT,
+                request,
+                StudentDto.class
+        );
+
+        return response.getBody();
+    }
+
+    public boolean deleteStudent(String admissionNumber) {
+        ResponseEntity<Boolean> response = restTemplate.exchange(
+                userServiceBaseUrl + "users/student/delete/" + admissionNumber,
+                HttpMethod.DELETE,
+                null,
+                Boolean.class
+        );
+        return Boolean.TRUE.equals(response.getBody());
     }
 
 }

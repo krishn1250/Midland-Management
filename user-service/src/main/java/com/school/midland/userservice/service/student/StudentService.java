@@ -9,13 +9,14 @@ import java.util.UUID;
 
 public interface StudentService {
     StudentDto createStudent(StudentDto studentDto);
-//    StudentDto getStudentById(Long id);
-//    StudentDto getStudentByUid(UUID uid);
-//    StudentDto getStudentByAdmissionNumber(String admissionNumber);
-//    StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
-//    StudentDto deleteStudentById(Long id);
-//    StudentDto getAllStudents();
-//    StudentDto getStudentsByGradeLevel(String gradeLevel);
-//    StudentDto getStudentsByAcademicYear(String academicYear);
-//    Student findByGradeAndSection(String grade, String  section);
+    StudentDto getStudentById(Long id);
+    StudentDto getStudentByUid(UUID uid);
+    StudentDto getStudentByAdmissionNumber(String admissionNumber);
+    StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
+    boolean deleteStudentByAdmissionNumber(String  admissionNumber);
+    List<StudentDto> getAllStudents();
+    List<StudentDto> getStudentsByGradeLevel(String gradeLevel);
+    List<StudentDto> getStudentsByAcademicYear(String academicYear);
+    List<StudentDto> getStudentsGradeAndSection(String grade, String  section);
+    StudentDto getCurrentStudent(String token);
 }

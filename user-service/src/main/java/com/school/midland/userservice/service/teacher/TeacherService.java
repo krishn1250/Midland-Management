@@ -15,7 +15,9 @@ public interface TeacherService {
     TeacherDto getTeacherByCode(String teacherCode);
     List<TeacherDto> getAllTeachers();
     TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto);
-    Boolean deleteTeacher(Long id);
+    Boolean deleteTeacher(String username);
     List<TeacherDto> findByDepartment(String department);
     List<TeacherDto>  findByDesignation(String department);
+    TeacherDto getByUsername(String username);
+
 }

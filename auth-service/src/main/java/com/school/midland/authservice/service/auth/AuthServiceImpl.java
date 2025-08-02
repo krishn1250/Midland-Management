@@ -41,7 +41,7 @@ private final PasswordEncoder passwordEncoder;
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user=authMapper.toUserEntity(request,encodedPassword);
         User saved=userRepository.save(user);
-        final var token = jwtTokenProvider.generateToken(saved.getUsername(), String.valueOf(saved.getRole()));
+        final var token = jwtTokenProvider.generateToken(saved.getUsername(), saved.getRole(),saved.getAssociatedIdentifier(),saved.getUserUid());
         AuthResponse authResponse=AuthResponse.builder()
                 .username(saved.getUsername())
                 .role(String.valueOf(saved.getRole()))
@@ -69,7 +69,7 @@ private final PasswordEncoder passwordEncoder;
             throw new AuthException("Invalid username or password", HttpStatus.UNAUTHORIZED);
         }
 
-        final var token = jwtTokenProvider.generateToken(user.getUsername(), String.valueOf(user.getRole()));
+        final var token = jwtTokenProvider.generateToken(user.getUsername(), user.getRole(),user.getAssociatedIdentifier(),user.getUserUid());
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .username(user.getUsername())

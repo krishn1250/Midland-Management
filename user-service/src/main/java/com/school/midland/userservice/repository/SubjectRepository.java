@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
-    Optional<Subject> findByCode(String code);
-
+    Optional<Subject> findBySubjectCode(String subjectCode);
+boolean existsBySubjectCode(String subjectCode);
     List<Subject> findByGradeLevel(String gradeLevel);
-
     List<Subject> findByTeacherCode(String teacherCode);
-    Optional<Subject> findBySubjectName(String subjectName);
+    List<Subject> findBySubjectName(String subjectName);
 }

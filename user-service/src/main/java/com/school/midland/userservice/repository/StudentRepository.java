@@ -1,6 +1,7 @@
 package com.school.midland.userservice.repository;
 
 import com.school.midland.userservice.models.Student;
+import org.apache.catalina.valves.StuckThreadDetectionValve;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface StudentRepository  extends JpaRepository<Student,Long> {
     List<Student> findByAcademicYear(String academicYear);
     List<Student> findByGradeLevelAndSection(String grade, String section);
     List<Student> findByCity(String city);
+Student findByUsernameAndAdmissionNumber(String username,String studentCode);
+boolean deleteByAdmissionNumber(String admissionNumber);
+
 }

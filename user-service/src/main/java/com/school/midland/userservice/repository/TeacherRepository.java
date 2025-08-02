@@ -16,5 +16,5 @@ public interface TeacherRepository extends JpaRepository<Teacher,Long> {
     Optional<List<Teacher>>  findByDepartment(String department);
     Optional<List<Teacher>>  findByDesignation(String department);
 
-
+Boolean deleteByUsername(String username);
 }

@@ -4,6 +4,7 @@ import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.userservice.models.Student;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
@@ -44,7 +45,7 @@ public class StudentMapper {
                 .guardianRelation(studentDto.getGuardianRelation())
                 .guardianContact(studentDto.getGuardianContact())
                 .createdAt(studentDto.getCreatedAt())
-                .updatedAt(studentDto.getUpdatedAt())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

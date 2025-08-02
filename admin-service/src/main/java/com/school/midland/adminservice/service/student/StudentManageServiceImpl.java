@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentManageServiceImpl implements  StudentManageService{
@@ -42,5 +44,24 @@ public class StudentManageServiceImpl implements  StudentManageService{
         System.out.println(auth_user.getUserUid());
         System.out.println(studentDto.getStudentUid());
         return  studentServiceClient.createUserRest(studentDto);
+    }
+    @Override
+    public boolean deleteStudent(String admissionNumber) {
+        return studentServiceClient.deleteStudent(admissionNumber);
+    }
+
+    @Override
+    public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto) {
+        return studentServiceClient.updateStudent(admissionNumber, updatedDto);
+    }
+
+    @Override
+    public StudentDto getByAdmissionNumber(String admissionNumber) {
+        return studentServiceClient.getByAdmissionNumber(admissionNumber);
+    }
+
+    @Override
+    public List<StudentDto> getAllStudents() {
+        return studentServiceClient.getAllStudents();
     }
 }

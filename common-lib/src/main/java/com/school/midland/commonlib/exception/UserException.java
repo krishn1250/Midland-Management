@@ -1,7 +1,9 @@
 package com.school.midland.commonlib.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class UserException extends  RuntimeException{
     private final HttpStatus status;
 
@@ -9,4 +11,6 @@ public class UserException extends  RuntimeException{
         super(message);
         this.status = status;
     }
+
+
 }

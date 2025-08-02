@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class SubjectDto {
 
     private String subjectName;
-    private String code;
+    private String subjectCode;
     private String curriculumType;
     private String gradeLevel;
     private String teacherCode;

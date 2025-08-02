@@ -4,6 +4,9 @@ import com.school.midland.adminservice.client.dtos.UserCreationRequest;
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,14 +24,9 @@ public class AuthServiceClientImpl implements AuthServiceClient {
 
     @Override
     public  UserCreationResponse createUser(UserCreationRequest userCreationRequest) {
-        System.out.println(userCreationRequest);
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("username",userCreationRequest.getUsername() );
-        payload.put("password",userCreationRequest.getPassword());
-        payload.put("email",userCreationRequest.getEmail());
-        payload.put("phoneNumber",userCreationRequest.getPhoneNumber());
-        payload.put("role", userCreationRequest.getRole());
-        payload.put("associatedIdentifier",""+ userCreationRequest.getAssociatedIdentifier());
-        return restTemplate.postForObject(authServiceBaseUrl + "auth/register", payload,  UserCreationResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserCreationRequest> request = new HttpEntity<>(userCreationRequest, headers);
+        return restTemplate.postForObject(authServiceBaseUrl + "auth/register", request,  UserCreationResponse.class);
     }
 }

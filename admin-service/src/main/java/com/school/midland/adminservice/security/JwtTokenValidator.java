@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtTokenValidator {
@@ -35,6 +36,8 @@ public class JwtTokenValidator {
             return false;
         }
     }
+    public String extractAssociateIdentifier(String token){return extractClaims(token).get("associated_identifier",String.class);}
+    public UUID extractUserUid(String token){return extractClaims(token).get("user_uid", UUID.class);}
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()

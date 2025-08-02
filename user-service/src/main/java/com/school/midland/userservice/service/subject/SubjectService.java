@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SubjectService {
-    Subject createSubject(SubjectDto dto);
-    SubjectDto updateSubject(String code, SubjectDto dto);
+    SubjectDto createSubject(SubjectDto dto);
+    List<SubjectDto> createSubjects(List<SubjectDto> subjectDto);
+    SubjectDto updateSubject(String subjectCode, SubjectDto dto);
     boolean deleteSubject(String code);
     List<SubjectDto> getAllSubjects();
     List<SubjectDto> getSubjectsByGrade(String gradeLevel);
