@@ -1,16 +1,30 @@
+#  schooldb:
+#    image: postgres:15
+#    container_name: postgres_container
+#    environment:
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: studentmgmtdb
+#      TZ: Asia/Kolkata
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./db_data:/var/lib/postgresql/data
 services:
-  schooldb:
-    image: postgres:15
-    container_name: postgres_container
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: studentmgmtdb
-      TZ: Asia/Kolkata
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    schooldb:
+      image: postgres:15
+      container_name: postgres_container
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: studentmgmtdb
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+        - ./init-scripts:/docker-entrypoint-initdb.d
+
+>>>>>>> d90f52a5db0625392eee0596c214ce681d294bfc
 
 
   auth-service:

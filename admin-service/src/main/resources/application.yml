@@ -3,7 +3,7 @@ spring:
     name: admin-service
 
   datasource:
-    url: jdbc:postgresql://135.237.189.153:5432/studentmgmtdb
+    url: jdbc:postgresql://135.237.189.153:5432/studentmgmtdb?TimeZone=Asia/Kolkata
     username: "root"
     password: "password"
     driver-class-name: org.postgresql.Driver
