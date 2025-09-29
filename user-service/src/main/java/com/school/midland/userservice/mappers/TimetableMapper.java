@@ -7,8 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TimetableMapper {
-    @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
+//    @Mapping(target = "createdAt", source = "createdAt")
+//    @Mapping(target = "updatedAt", source = "updatedAt")
     Timetable toEntity(TimetableDto dto);
     TimetableDto toDto(Timetable entity);
 }

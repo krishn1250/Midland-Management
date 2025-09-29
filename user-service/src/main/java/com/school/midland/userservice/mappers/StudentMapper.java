@@ -44,6 +44,7 @@ public class StudentMapper {
                 .guardianName(studentDto.getGuardianName())
                 .guardianRelation(studentDto.getGuardianRelation())
                 .guardianContact(studentDto.getGuardianContact())
+                .schoolCode(studentDto.getSchoolCode())
                 .createdAt(studentDto.getCreatedAt())
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -83,6 +84,7 @@ public class StudentMapper {
                 .guardianName(student.getGuardianName())
                 .guardianRelation(student.getGuardianRelation())
                 .guardianContact(student.getGuardianContact())
+                .schoolCode(student.getSchoolCode())
                 .createdAt(student.getCreatedAt())
                 .updatedAt(student.getUpdatedAt())
                 .build();

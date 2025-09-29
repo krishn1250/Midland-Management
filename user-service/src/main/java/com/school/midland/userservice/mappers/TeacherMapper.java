@@ -26,6 +26,7 @@ public class TeacherMapper {
                 .joinDate(teacher.getJoinDate())
                 .designation(teacher.getDesignation())
                 .profileImage(teacher.getProfileImage())
+                .schoolCode(teacher.getSchoolCode())
                 .build();
     }
 
@@ -48,6 +49,7 @@ public class TeacherMapper {
                 .profileImage(dto.getProfileImage())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .schoolCode(dto.getSchoolCode())
                 .build();
     }
 }

@@ -8,5 +8,143 @@ services:
       POSTGRES_DB: studentmgmtdb
     ports:
       - "5432:5432"
+
     volumes:
       - ./db_data:/var/lib/postgresql/data
+
+
+  auth-service:
+#      build: ./auth-service
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    image: auth-service:latest
+    container_name: auth_service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - schooldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+
+  admin-service:
+    build:
+      context: .
+      dockerfile: admin-service/Dockerfile
+    image: admin-service:latest
+    container_name: admin_service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - schooldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    container_name: notification_service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - schooldb
+
+  payment-gateway-service:
+    build:
+      context: .
+      dockerfile: payment-gateway-service/Dockerfile
+    container_name: payment_gateway_service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - schooldb
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    image: user-service:latest
+    container_name: user_service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - schooldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+
+
+#networks:
+#  - midland-newtork:
+#
+#
+#version: "3.9"
+#
+#services:
+#  schooldb:
+#    image: postgres:latest
+#    container_name: postgres_container
+#    environment:
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: studentmgmtdb
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./db_data:/var/lib/postgresql/data
+#
+#  auth-service:
+#    build:
+#      context: .
+#      dockerfile: auth-service/Dockerfile
+#    container_name: auth_service
+#    ports:
+#      - "8082:8080"
+#    depends_on:
+#      - schooldb
+#
+#  admin-service:
+#    build:
+#      context: .
+#      dockerfile: admin-service/Dockerfile
+#    container_name: admin_service
+#    ports:
+#      - "8081:8080"
+#    depends_on:
+#      - schooldb
+#
+#  notification-service:
+#    build:
+#      context: .
+#      dockerfile: notification-service/Dockerfile
+#    container_name: notification_service
+#    ports:
+#      - "8083:8080"
+#    depends_on:
+#      - schooldb
+#
+#  payment-gateway-service:
+#    build:
+#      context: .
+#      dockerfile: payment-gateway-service/Dockerfile
+#    container_name: payment_gateway_service
+#    ports:
+#      - "8084:8080"
+#    depends_on:
+#      - schooldb
+#
+#  user-service:
+#    build:
+#      context: .
+#      dockerfile: user-service/Dockerfile
+#    container_name: user_service
+#    ports:
+#      - "8085:8080"
+#    depends_on:
+#      - schooldb

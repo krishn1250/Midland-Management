@@ -31,6 +31,9 @@ public class Subject {
 
     private String gradeLevel;
 
+    @Column(name="school_code")
+    private String schoolCode;
+
     @Column(nullable = false)
     private String teacherCode;
 

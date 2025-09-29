@@ -18,5 +18,6 @@ public class SubjectDto {
     private String curriculumType;
     private String gradeLevel;
     private String teacherCode;
+    private  String schoolCode;
     private LocalDateTime createdAt;
 }

@@ -56,6 +56,9 @@ public class Student {
     @Column(name = "nationality")
     private String nationality;
 
+    @Column(name="school_code")
+    private String schoolCode;
+
     @Column(name = "mother_tongue")
     private String motherTongue;
 

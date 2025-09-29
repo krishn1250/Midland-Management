@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 
-public class AttendanceServiceImpl implements  AttendanceService{
+public class  AttendanceServiceImpl implements  AttendanceService{
 
     private final AttendanceRepository attendanceRepository;
 

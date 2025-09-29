@@ -23,9 +23,30 @@ public class AuthController {
     public ResponseEntity<?>  register(@RequestBody RegisterRequest request){
 return authService.userSignup(request);
     }
-    @PostMapping("/login")
-    public ResponseEntity<?>  userLogin(@RequestBody LoginRequest request){
-        return authService.userSignin(request);
+    @PostMapping("/parent/login")
+    public ResponseEntity<?> parentLogin(@RequestBody LoginRequest request) {
+        return authService.userSignin(request, "PARENT");
     }
+
+    @PostMapping("/teacher/login")
+    public ResponseEntity<?> teacherLogin(@RequestBody LoginRequest request) {
+        return authService.userSignin(request, "TEACHER");
+    }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<?> adminLogin(@RequestBody LoginRequest request) {
+        return authService.userSignin(request, "ADMIN");
+    }
+
+    @PostMapping("/accountant/login")
+    public ResponseEntity<?> accountantLogin(@RequestBody LoginRequest request) {
+        return authService.userSignin(request, "ACCOUNTANT");
+    }
+
+    @PostMapping("/system/login")
+    public ResponseEntity<?> systemLogin(@RequestBody LoginRequest request) {
+        return authService.userSignin(request, "SYSTEM");
+    }
+
 
 }

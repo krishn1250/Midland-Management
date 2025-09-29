@@ -18,6 +18,7 @@ public class SubjectMapper {
                 .curriculumType(dto.getCurriculumType())
                 .gradeLevel(dto.getGradeLevel())
                 .teacherCode(dto.getTeacherCode())
+                .schoolCode(dto.getSchoolCode())
                 .createdAt(dto.getCreatedAt())
                 .build();
     }
@@ -31,6 +32,7 @@ public class SubjectMapper {
                 .curriculumType(subject.getCurriculumType())
                 .gradeLevel(subject.getGradeLevel())
                 .teacherCode(subject.getTeacherCode())
+                .schoolCode(subject.getSchoolCode())
                 .createdAt(subject.getCreatedAt())
                 .build();
     }

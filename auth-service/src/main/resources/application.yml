@@ -3,13 +3,10 @@ spring:
     name: auth-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/studentmgmtdb
-    username: "root"
-    password: "password"
+    url: jdbc:postgresql://schooldb:5432/studentmgmtdb
+    username: root
+    password: password
     driver-class-name: org.postgresql.Driver
-
-server:
-  port: 8081
 
   jpa:
     hibernate:
@@ -20,10 +17,9 @@ server:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+server:
+  port: 8081
+
 jwt:
   secret: vvgUOp6+IKgzx9rEN0uxVHTcLONT/0kuuNWV8J5WNliudPE69d/nr6Di+txIAaglf1Gn3hjCBCjRmxH7xZPw8rQ==
   expiration: 86400000
-
-#user-service:
-#  base-url: http://localhost:8082
-

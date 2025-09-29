@@ -28,4 +28,5 @@ public class TeacherDto {
     private String designation;
     private String profileImage;
     private String schoolEmail;
+    private String schoolCode;
 }

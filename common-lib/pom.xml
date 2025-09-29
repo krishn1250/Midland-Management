@@ -46,11 +46,11 @@
     </dependency>
 
     <!-- Common-lib -->
-    <dependency>
-        <groupId>com.school.midland</groupId>
-        <artifactId>common-lib</artifactId>
-        <version>1.0.0</version>
-    </dependency>
+<!--    <dependency>-->
+<!--        <groupId>com.school.midland</groupId>-->
+<!--        <artifactId>common-lib</artifactId>-->
+<!--        <version>1.0.0</version>-->
+<!--    </dependency>-->
 
     <!-- Security -->
     <dependency>

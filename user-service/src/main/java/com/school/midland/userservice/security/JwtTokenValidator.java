@@ -37,7 +37,10 @@ public class JwtTokenValidator {
         }
     }
     public String extractAssociateIdentifier(String token){return extractClaims(token).get("associated_identifier",String.class);}
-    public UUID extractUserUid(String token){return extractClaims(token).get("user_uid", UUID.class);}
+    public UUID extractUserUid(String token) {
+        String uidStr = extractClaims(token).get("user_uid", String.class);
+        return UUID.fromString(uidStr);
+    }
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()

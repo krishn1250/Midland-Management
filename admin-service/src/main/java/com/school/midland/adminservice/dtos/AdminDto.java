@@ -21,5 +21,5 @@ public class AdminDto {
     private String email;
     private String phoneNumber;
     private String designation;
-
+    private String schoolCode;
 }

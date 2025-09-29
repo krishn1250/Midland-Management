@@ -30,7 +30,7 @@
             if (dto == null) throw new IllegalArgumentException("Admin DTO is null");
 
              var admin = adminMapper.requesttoEntity(dto);
-    admin.setAdminUid(UUID.randomUUID());
+            admin.setAdminUid(UUID.randomUUID());
             UserCreationResponse userResp = authServiceClient.createUser(
                     UserCreationRequest.builder()
                             .username(dto.getUsername())

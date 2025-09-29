@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/midland/auth/login", "/midland/auth/register").permitAll()
+                        .requestMatchers("/midland/auth/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

@@ -7,5 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
 
     public ResponseEntity userSignup(RegisterRequest request);
-    public ResponseEntity userSignin(LoginRequest request);
+    public ResponseEntity userSignin(LoginRequest request,String Role);
 }

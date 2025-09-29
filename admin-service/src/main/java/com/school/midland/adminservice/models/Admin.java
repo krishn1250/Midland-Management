@@ -56,6 +56,9 @@ public class Admin {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
+    @Column(name="school_code")
+    private String schoolCode;
+
     @PrePersist
     public void prePersist() {
         if (adminUid == null) adminUid = UUID.randomUUID();

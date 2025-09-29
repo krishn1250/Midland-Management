@@ -48,9 +48,12 @@ public class StudentDto {
     private String schoolEmail;
     private String personalEmail;
 
+
     private String guardianName;
     private String guardianRelation;
     private String guardianContact;
+
+    private String schoolCode;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
