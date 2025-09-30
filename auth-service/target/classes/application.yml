@@ -3,9 +3,9 @@ spring:
     name: auth-service
 
   datasource:
-    url: jdbc:postgresql://135.237.189.153:5432/studentmgmtdb
+    url: jdbc:postgresql://135.237.189.153:5433/school_db
     username: root
-    password: password
+    password: midland
     driver-class-name: org.postgresql.Driver
 
   jpa:

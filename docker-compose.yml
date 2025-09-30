@@ -11,7 +11,6 @@ services:
         - "5432:5432"
       volumes:
         - postgres_data:/var/lib/postgresql/data
-        - ./init-scripts:/docker-entrypoint-initdb.d
 
 
   auth-service:
@@ -26,7 +25,7 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
@@ -41,7 +40,7 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
@@ -76,7 +75,7 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5432/studentmgmtdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
