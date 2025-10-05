@@ -90,9 +90,9 @@ volumes:
 #services:
 #  schooldb:
 #    image: postgres:latest
-#    container_name: postgres_container
+#    container_name: postgresdocker_container
 #    environment:
-#      POSTGRES_USER: root
+#      POSTGRES_USER: rootgit p
 #      POSTGRES_PASSWORD: password
 #      POSTGRES_DB: studentmgmtdb
 #    ports:
