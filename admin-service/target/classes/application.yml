@@ -8,10 +8,6 @@ spring:
     password: midland
     driver-class-name: org.postgresql.Driver
 
-
-server:
-  port: 8082
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,6 +16,12 @@ server:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+
+server:
+  port: 8082
+
+
 
 
 auth-service:

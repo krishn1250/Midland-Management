@@ -25,10 +25,10 @@ server:
 
 
 auth-service:
-  base-url: http://135.237.189.153:8081/midland/
+  base-url: http://suth-service:8081/midland/
 
 user-service:
-  base-url: http://135.237.189.153:8083/midland/
+  base-url: http://user-service:8083/midland/
 
 jwt:
   secret: vvgUOp6+IKgzx9rEN0uxVHTcLONT/0kuuNWV8J5WNliudPE69d/nr6Di+txIAaglf1Gn3hjCBCjRmxH7xZPw8rQ==
