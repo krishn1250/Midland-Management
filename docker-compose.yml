@@ -1,15 +1,15 @@
 services:
-  schooldb:
-      image: postgres:15
-      container_name: postgres_container
-      environment:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: password
-        POSTGRES_DB: studentmgmtdb
-      ports:
-        - "5432:5432"
-      volumes:
-        - postgres_data:/var/lib/postgresql/data
+#  schooldb:
+#      image: postgres:15
+#      container_name: postgres_container
+#      environment:
+#        POSTGRES_USER: root
+#        POSTGRES_PASSWORD: password
+#        POSTGRES_DB: studentmgmtdb
+#      ports:
+#        - "5432:5432"
+#      volumes:
+#        - postgres_data:/var/lib/postgresql/data
 
   #  schooldb:
   #    image: postgres:15
@@ -35,7 +35,7 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
@@ -50,29 +50,29 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
-  notification-service:
-    build:
-      context: .
-      dockerfile: notification-service/Dockerfile
-    container_name: notification_service
-    ports:
-      - "8084:8084"
-    depends_on:
-      - schooldb
+#  notification-service:
+#    build:
+#      context: .
+#      dockerfile: notification-service/Dockerfile
+#    container_name: notification_service
+#    ports:
+#      - "8084:8084"
+#    depends_on:
+#      - schooldb
 
-  payment-gateway-service:
-    build:
-      context: .
-      dockerfile: payment-gateway-service/Dockerfile
-    container_name: payment_gateway_service
-    ports:
-      - "8085:8085"
-    depends_on:
-      - schooldb
+#  payment-gateway-service:
+#    build:
+#      context: .
+#      dockerfile: payment-gateway-service/Dockerfile
+#    container_name: payment_gateway_service
+#    ports:
+#      - "8085:8085"
+#    depends_on:
+#      - schooldb
 
   user-service:
     build:
@@ -85,7 +85,7 @@ services:
     depends_on:
       - schooldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://schooldb:5433/school_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
