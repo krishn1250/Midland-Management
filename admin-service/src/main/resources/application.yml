@@ -25,7 +25,7 @@ server:
 
 
 auth-service:
-  base-url: http://suth-service:8081/midland/
+  base-url: http://auth-service:8081/midland/
 
 user-service:
   base-url: http://user-service:8083/midland/
