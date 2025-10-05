@@ -38,7 +38,7 @@
                             .role(String.valueOf(UserRole.ADMIN.name()))
                             .email(dto.getEmail())
                             .fullName(dto.getFullName())
-                            .phoneNumber(dto.getPhoneNumber())
+//                            .phoneNumber(dto.getPhoneNumber())
                             .associatedIdentifier("ADM"+admin.getAdminUid().toString().substring(0,6)) // or use adminUid after creation
                             .build()
             );
@@ -46,6 +46,7 @@
                 throw new IllegalArgumentException("unable to create signup");
             }
             admin.setUserUid(userResp.getUserUid());
+            admin.setSchoolCode(dto.getSchoolCode());
             adminRepository.save(admin);
 
             return userResp;
@@ -54,8 +55,10 @@
         }
 
         @Override
-        public AdminDto getAdmin(String username, String password) {
-            return null;
+        public AdminDto getAdmin(String username) {
+            Admin admin = adminRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Admin not found"));
+            return mapToDto(admin);
         }
 
 
@@ -93,6 +96,7 @@
         private AdminDto mapToDto(Admin admin) {
             return AdminDto.builder()
                     .fullName(admin.getFullName())
+                    .username(admin.getUsername())
                     .email(admin.getEmail())
                     .phoneNumber(admin.getPhoneNumber())
                     .designation(admin.getDesignation())

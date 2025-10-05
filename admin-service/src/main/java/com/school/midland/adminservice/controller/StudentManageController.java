@@ -15,8 +15,9 @@ public class StudentManageController {
     private  final StudentManageService studentManageService;
 
     @PostMapping("/create")
-    public StudentDto createStudent(@RequestBody StudentDto studentDto){
-return studentManageService.createStudent(studentDto);
+    public StudentDto createStudent(@RequestBody StudentDto studentDto, @RequestHeader("Authorization")String token){
+        System.out.println(studentDto);
+return studentManageService.createStudent(studentDto,token);
     }
     @DeleteMapping("/delete/{admissionNumber}")
     public boolean deleteStudent(@PathVariable String admissionNumber) {

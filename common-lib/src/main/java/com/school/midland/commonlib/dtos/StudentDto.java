@@ -46,6 +46,7 @@ public class StudentDto {
 
     private String phoneNumber;
     private String schoolEmail;
+
     private String personalEmail;
 
 

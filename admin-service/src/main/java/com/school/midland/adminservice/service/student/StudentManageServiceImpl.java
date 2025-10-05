@@ -9,6 +9,8 @@ import com.school.midland.commonlib.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class StudentManageServiceImpl implements  StudentManageService{
     private final AuthServiceClient authServiceClient;
 
     @Override
-    public StudentDto createStudent(StudentDto studentDto) {
+    public StudentDto createStudent(StudentDto studentDto, String token) {
 
             if(studentDto==null || studentDto.getAdmissionNumber()==null ||
                     studentDto.getSchoolEmail()==null || studentDto.getAcademicYear()==null){

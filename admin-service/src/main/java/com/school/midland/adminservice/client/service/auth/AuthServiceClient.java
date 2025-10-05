@@ -6,4 +6,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface AuthServiceClient {
     UserCreationResponse createUser(@RequestBody UserCreationRequest userCreationRequest);
+UserCreationResponse getbyuserName(String username);
 }

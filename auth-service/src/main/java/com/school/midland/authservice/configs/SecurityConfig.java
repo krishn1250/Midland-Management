@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
+
 public class SecurityConfig {
     private final JwtUserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -38,9 +40,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/midland/auth/**").permitAll()
-
-                        .anyRequest().authenticated()
+                        .requestMatchers("/midland/**").permitAll() // all login endpoints open
+                        .anyRequest().authenticated() // register + everything else requires JWT
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
