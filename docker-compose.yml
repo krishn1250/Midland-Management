@@ -25,7 +25,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: midland
 
   admin-service:
     build:
@@ -40,7 +40,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: midland
 
 #  notification-service:
 #    build:
@@ -75,7 +75,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://135.237.189.153:5433/school_db
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: midland
 
 
 volumes:
