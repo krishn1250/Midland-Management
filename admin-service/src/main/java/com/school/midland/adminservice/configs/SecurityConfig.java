@@ -33,9 +33,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Make /students/all public
-                        .requestMatchers("/midland/admin/students/all").permitAll()
+//                        .requestMatchers("/midland/admin/students/all").permitAll()
                         // Make /admins/** public if you need
-                        .requestMatchers("/midland/admins/**").permitAll()
+                        .requestMatchers("/midland/**").permitAll()
                         // All other endpoints require JWT
                         .anyRequest().authenticated()
                 )
