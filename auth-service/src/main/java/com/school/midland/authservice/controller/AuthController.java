@@ -7,10 +7,8 @@ import com.school.midland.authservice.dto.request.RegisterRequest;
 import com.school.midland.authservice.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,34 +17,38 @@ public class AuthController {
 
     private  final AuthService authService;
 
+
     @PostMapping("/register")
     public ResponseEntity<?>  register(@RequestBody RegisterRequest request){
-return authService.userSignup(request);
+
+        System.out.println("hello");
+        return authService.userSignup(request);
     }
-    @PostMapping("/parent/login")
+    @GetMapping("/student/login")
     public ResponseEntity<?> parentLogin(@RequestBody LoginRequest request) {
-        return authService.userSignin(request, "PARENT");
+        return authService.userSignin(request, "STUDENT");
     }
 
-    @PostMapping("/teacher/login")
+    @GetMapping("/teacher/login")
     public ResponseEntity<?> teacherLogin(@RequestBody LoginRequest request) {
         return authService.userSignin(request, "TEACHER");
     }
 
-    @PostMapping("/admin/login")
+    @GetMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequest request) {
         return authService.userSignin(request, "ADMIN");
     }
 
-    @PostMapping("/accountant/login")
-    public ResponseEntity<?> accountantLogin(@RequestBody LoginRequest request) {
-        return authService.userSignin(request, "ACCOUNTANT");
-    }
+//    @GetMapping("/accountant/login")
+//    public ResponseEntity<?> accountantLogin(@RequestBody LoginRequest request) {
+//        return authService.userSignin(request, "ACCOUNTANT");
+//    }
+//
+//    @GetMapping("/system/login")
+//    public ResponseEntity<?> systemLogin(@RequestBody LoginRequest request) {
+//        return authService.userSignin(request, "SYSTEM");
+//    }
 
-    @PostMapping("/system/login")
-    public ResponseEntity<?> systemLogin(@RequestBody LoginRequest request) {
-        return authService.userSignin(request, "SYSTEM");
-    }
 
 
 }

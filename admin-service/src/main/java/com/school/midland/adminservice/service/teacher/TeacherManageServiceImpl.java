@@ -34,7 +34,7 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
                 .username(teacherDto.getUsername())
                 .password(teacherDto.getPassword())
                 .fullName(teacherDto.getFirstName()+" "+teacherDto.getLastName())
-                .phoneNumber(teacherDto.getPhoneNumber())
+//                .phoneNumber(teacherDto.getPhoneNumber())
                 .build();
         final UserCreationResponse auth_user = authServiceClient.createUser(userCreationRequest);
         if(auth_user.getUserUid()==null){

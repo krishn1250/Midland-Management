@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface AdminService {
 
    UserCreationResponse createAdmin(AdminDto dto);
-    AdminDto getAdmin(String username,String password);
+    AdminDto getAdmin(String username);
     List<AdminDto> getAllAdmins();
     AdminDto updateAdmin(UUID adminUid, AdminDto dto);
     void deleteAdmin(UUID adminUid);

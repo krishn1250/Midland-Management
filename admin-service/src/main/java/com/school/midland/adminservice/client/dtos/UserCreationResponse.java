@@ -9,6 +9,10 @@ public class UserCreationResponse {
     private String token;
     private String username;
     private UUID userUid;
+    private String fullName;
+    private String email;
     private String role;
     private String message;
+
+
 }

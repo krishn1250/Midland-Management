@@ -46,6 +46,9 @@ private final PasswordEncoder passwordEncoder;
                 .username(saved.getUsername())
                 .role(String.valueOf(saved.getRole()))
                 .userUid(saved.getUserUid())
+                .email(saved.getEmail())
+                .fullName(saved.getFullName())
+                .message("sucess")
                 .token(token)
                 .build();
 

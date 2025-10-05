@@ -1,22 +1,20 @@
-package com.school.midland.authservice.dto.response;
+package com.school.midland.adminservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class AuthResponse {
-    private String token;
+public class UserCreationRequest {
     private String username;
-    private UUID userUid;
+    private String password;
     private String fullName;
+    private String phoneNumber;
     private String email;
     private String role;
-    private String message;
+    private String associatedIdentifier; // schoolCode or adminId
 }

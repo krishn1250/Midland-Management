@@ -23,6 +23,7 @@ public class AuthMapper {
                 .role(request.getRole())
                 .password(passwordEncoded)
                 .username(request.getUsername())
+                .phoneNumber(request.getPhoneNumber())
                 .build(); }
 
 

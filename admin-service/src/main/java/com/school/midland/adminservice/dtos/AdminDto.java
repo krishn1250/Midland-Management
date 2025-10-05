@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminDto {
+
     @NotBlank(message = "Password is mandatory")
     private String password;
     @NotBlank(message = "Username is mandatory")

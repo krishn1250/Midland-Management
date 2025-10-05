@@ -1,5 +1,10 @@
 package com.school.midland.adminservice;
 
+import com.school.midland.adminservice.client.dtos.UserCreationRequest;
+import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
+
+import com.school.midland.adminservice.cons.Role;
 import com.school.midland.adminservice.models.Admin;
 import com.school.midland.adminservice.repository.AdminRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -17,30 +22,53 @@ public class AdminServiceApplication {
     }
 
     @Bean
-    CommandLineRunner initDefaultAdmin(AdminRepository adminRepository) {
+    CommandLineRunner initDefaultAdmin(AdminRepository adminRepository,
+                                       AuthServiceClient authServiceClient) {
         return args -> {
-            // Check if admin already exists
-            adminRepository.findByUsername("superadmin")
-                    .or(() -> adminRepository.findByEmail("admin@midland.edu"))
-                    .ifPresentOrElse(
-                            existing -> System.out.println("✅ Default admin already exists: " + existing.getUsername()),
-                            () -> {
-                                Admin admin = Admin.builder()
-                                        .userUid(UUID.randomUUID()) // ideally should come from users table
-                                        .username("superadmin")
-                                        .email("admin@midland.edu")
-                                        .fullName("System Administrator")
-                                        .designation("System Admin")
-                                        .schoolCode("MID-HYD-001") // default school code
-                                        .isActive(true)
-                                        .build();
+            try {
+                UserCreationResponse response = null;
+                try {
+                    response = authServiceClient.getbyuserName("superadmin");
+                    System.out.println(response);
+                } catch (org.springframework.web.client.HttpClientErrorException.NotFound e) {
+                    System.out.println("User not found in auth-service, creating new one...");
+                }
 
-                                adminRepository.save(admin);
-                                System.out.println("🚀 Default admin created: superadmin / admin@midland.edu");
-                            }
-                    );
+                if (response == null) {
+                    UserCreationRequest request = UserCreationRequest.builder()
+                            .username("superadmin")
+                            .password("superadmin@123")
+                            .fullName("System Administrator")
+                            .email("admin@midland.edu")
+                            .role("ADMIN")
+                            .phoneNumber("")
+                            .associatedIdentifier("ADM")
+                            .build();
+                    response = authServiceClient.createUser(request);
+                }
+
+                UserCreationResponse finalResponse = response;
+                System.out.println(finalResponse);
+                adminRepository.findByUserUid(finalResponse.getUserUid())
+                        .orElseGet(() -> {
+                            Admin admin = Admin.builder()
+                                    .userUid(finalResponse.getUserUid())
+                                    .username(finalResponse.getUsername())
+                                    .email(finalResponse.getEmail())
+                                    .fullName("System Administrator")
+                                    .designation("System Admin")
+                                    .schoolCode("MID-HYD-001")
+                                    .isActive(true)
+                                    .build();
+                            return adminRepository.save(admin);
+                        });
+
+                System.out.println("🚀 Default admin ensured in both auth-service and admin-service");
+
+            } catch (Exception e) {
+                System.err.println("❌ Failed to create default admin: " + e.getMessage());
+            }
         };
     }
-
 
 }

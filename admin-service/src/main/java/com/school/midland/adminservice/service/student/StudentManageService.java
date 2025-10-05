@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StudentManageService {
 
-    StudentDto createStudent(StudentDto studentDto);
+    StudentDto createStudent(StudentDto studentDto,String token);
     boolean deleteStudent(String admissionNumber);
     StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
     StudentDto getByAdmissionNumber(String admissionNumber);
