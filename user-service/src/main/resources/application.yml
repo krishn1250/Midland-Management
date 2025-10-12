@@ -18,7 +18,7 @@ spring:
       leak-detection-threshold: 20000   # Log if a connection isn't closed within 20s
       keepalive-time: 300000            # Ping idle connections every 5 min
       validation-timeout: 5000          # Timeout for testing a connection
-      connection-test-query: SELECT 1s
+      connection-test-query: SELECT 1
 
 
   jpa:
