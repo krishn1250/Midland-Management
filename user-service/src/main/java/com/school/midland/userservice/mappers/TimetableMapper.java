@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface TimetableMapper {
 //    @Mapping(target = "createdAt", source = "createdAt")
 //    @Mapping(target = "updatedAt", source = "updatedAt")
-    Timetable toEntity(TimetableDto dto);
+@Mapping(target = "academicYear", source = "academicYear")
+Timetable toEntity(TimetableDto dto);
     TimetableDto toDto(Timetable entity);
 }
