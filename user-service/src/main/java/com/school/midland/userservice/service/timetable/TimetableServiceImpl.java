@@ -2,6 +2,7 @@ package com.school.midland.userservice.service.timetable;
 
 import com.school.midland.commonlib.dtos.TimetableDto;
 import com.school.midland.commonlib.exception.UserException;
+
 import com.school.midland.userservice.mappers.TimetableMapper;
 import com.school.midland.userservice.models.Timetable;
 import com.school.midland.userservice.repository.TimetableRepository;
