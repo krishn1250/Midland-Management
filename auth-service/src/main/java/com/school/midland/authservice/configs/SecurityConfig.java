@@ -40,8 +40,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/midland/auth/*/login").permitAll()
-                        .requestMatchers(("/midland/auth/register")).hasRole("ADMIN")
+                        .requestMatchers("/midland/**").permitAll()
+//                        .requestMatchers(("/midland/auth/register")).hasRole("ADMIN")
                         .anyRequest().authenticated() // register + everything else requires JWT
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);

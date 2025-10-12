@@ -20,6 +20,7 @@ public class AdminController {
     // ✅ Create admin
     @PostMapping("/create")
     public ResponseEntity<UserCreationResponse> createAdmin(@RequestBody AdminDto adminDto) {
+        System.out.println("hello bros");
         final var admin = adminService.createAdmin(adminDto);
         return ResponseEntity.ok(admin);
     }

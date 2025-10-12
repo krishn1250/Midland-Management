@@ -8,6 +8,18 @@ spring:
     password: midland
     driver-class-name: org.postgresql.Driver
 
+
+    hikari:
+      maximum-pool-size: 10             # Number of concurrent DB connections
+      minimum-idle: 5                   # Keep 5 idle connections ready
+      idle-timeout: 30000               # 30s — idle connections closed
+      max-lifetime: 600000              # 10 min — refresh connections before Postgres kills them
+      connection-timeout: 30000         # 30s — wait time to get a connection from pool
+      leak-detection-threshold: 20000   # Log if a connection isn't closed within 20s
+      keepalive-time: 300000            # Ping idle connections every 5 min
+      validation-timeout: 5000          # Timeout for testing a connection
+      connection-test-query: SELECT 1
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,10 +37,10 @@ server:
 
 
 auth-service:
-  base-url: http://auth-service:8081/midland/
+  base-url: http://localhost:8081/midland/
 
 user-service:
-  base-url: http://user-service:8083/midland/
+  base-url: http://localhost:8083/midland/
 
 jwt:
   secret: vvgUOp6+IKgzx9rEN0uxVHTcLONT/0kuuNWV8J5WNliudPE69d/nr6Di+txIAaglf1Gn3hjCBCjRmxH7xZPw8rQ==
