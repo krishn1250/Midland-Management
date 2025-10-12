@@ -49,7 +49,7 @@ public class Timetable {
     @Column(name = "teacher_code", nullable = false)
     private String teacherCode;
 
-    @Column(name = "academic_year",nullable = false)
+    @Column(name = "academic_year")
     private String academicYear;
 
     @Column(name = "room_number")

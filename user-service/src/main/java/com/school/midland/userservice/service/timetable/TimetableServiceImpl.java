@@ -52,6 +52,7 @@ public class TimetableServiceImpl implements TimetableService {
                 ))
                 .map(timetableMapper::toEntity)
                 .peek(dto -> {
+
                     dto.setCreatedAt(LocalDateTime.now());
                     dto.setUpdatedAt(LocalDateTime.now());
                 })
