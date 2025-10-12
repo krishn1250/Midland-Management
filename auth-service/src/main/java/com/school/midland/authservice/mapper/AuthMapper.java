@@ -18,7 +18,7 @@ public class AuthMapper {
         return   User.builder()
                 .email(request.getEmail())
                 .userUid(UUID.randomUUID())
-                .associatedIdentifier("ADM"+request.getUsername().strip().substring(0,3)+request.getEmail().substring(0,3))
+                .associatedIdentifier("ADM"+request.getUsername()+request.getPassword())
                 .fullName(request.getFullName())
                 .role(request.getRole())
                 .password(passwordEncoded)
