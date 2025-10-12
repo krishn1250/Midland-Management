@@ -33,7 +33,7 @@ public class TimetableMapper {
         if (entity == null) return null;
 
         TimetableDto dto = new TimetableDto();
-//        dto.setId(entity.getId());
+        dto.setId(entity.getId());
         dto.setGradeLevel(entity.getGradeLevel());
         dto.setSection(entity.getSection());
         dto.setDayOfWeek(entity.getDayOfWeek());
@@ -45,7 +45,7 @@ public class TimetableMapper {
         dto.setTeacherCode(entity.getTeacherCode());
         dto.setRoomNumber(entity.getRoomNumber());
         dto.setAcademicYear(entity.getAcademicYear());
-//        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setCreatedAt(entity.getCreatedAt());
         dto.setUpdatedAt(LocalDateTime.now());
         return dto;
     }
