@@ -24,10 +24,12 @@ public class JwtTokenProvider {
     private Key getSignKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
-    public String generateToken(String username, String role, String identifier, UUID userUid) {
+
+    public String generateToken(String username, String role, String identifier,String email, UUID userUid) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)
+                .claim("email",email)
                 .claim("associated_identifier",identifier)
                 .claim("user_uid",userUid)
                 .setIssuedAt(new Date())
@@ -57,7 +59,7 @@ public class JwtTokenProvider {
 
     public String extractAssociateIdentifier(String token){return extractClaims(token).get("associated_identifier",String.class);}
     public UUID extractUserUid(String token){return extractClaims(token).get("user_uid", UUID.class);}
-
+    public String extractEmail(String token){return extractClaims(token).get("email",String.class);}
     public boolean isTokenValid(String token) {
         try {
             extractClaims(token);

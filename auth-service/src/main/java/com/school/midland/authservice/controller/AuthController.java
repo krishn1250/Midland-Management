@@ -17,34 +17,33 @@ public class AuthController {
 
     private  final AuthService authService;
 
-
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<?>  register(@RequestBody RegisterRequest request){
 
-        System.out.println("hello");
         return authService.userSignup(request);
     }
-    @GetMapping("/student/login")
+    @PostMapping("/student/login")
     public ResponseEntity<?> parentLogin(@RequestBody LoginRequest request) {
         return authService.userSignin(request, "STUDENT");
     }
 
-    @GetMapping("/teacher/login")
+    @PostMapping("/teacher/login")
     public ResponseEntity<?> teacherLogin(@RequestBody LoginRequest request) {
         return authService.userSignin(request, "TEACHER");
     }
 
-    @GetMapping("/admin/login")
+    @PostMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequest request) {
         return authService.userSignin(request, "ADMIN");
     }
 
-//    @GetMapping("/accountant/login")
+//    @PostMapping("/accountant/login")
 //    public ResponseEntity<?> accountantLogin(@RequestBody LoginRequest request) {
 //        return authService.userSignin(request, "ACCOUNTANT");
 //    }
 //
-//    @GetMapping("/system/login")
+//    @PostMapping("/system/login")
 //    public ResponseEntity<?> systemLogin(@RequestBody LoginRequest request) {
 //        return authService.userSignin(request, "SYSTEM");
 //    }

@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
-
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtUserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/midland/**").permitAll() // all login endpoints open
+                        .requestMatchers("/midland/auth/*/login").permitAll()
+                        .requestMatchers(("/midland/auth/register")).hasRole("ADMIN")
                         .anyRequest().authenticated() // register + everything else requires JWT
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -50,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

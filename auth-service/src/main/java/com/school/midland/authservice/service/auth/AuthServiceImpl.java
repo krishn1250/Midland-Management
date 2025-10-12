@@ -41,7 +41,7 @@ private final PasswordEncoder passwordEncoder;
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user=authMapper.toUserEntity(request,encodedPassword);
         User saved= authRepository.save(user);
-        final var token = jwtTokenProvider.generateToken(saved.getUsername(), saved.getRole(),saved.getAssociatedIdentifier(),saved.getUserUid());
+        final var token = jwtTokenProvider.generateToken(saved.getUsername(), saved.getRole(),saved.getAssociatedIdentifier(),saved.getEmail(),saved.getUserUid());
         AuthResponse authResponse=AuthResponse.builder()
                 .username(saved.getUsername())
                 .role(String.valueOf(saved.getRole()))
@@ -81,7 +81,7 @@ private final PasswordEncoder passwordEncoder;
         }
 
 
-        final var token = jwtTokenProvider.generateToken(user.getUsername(), user.getRole(),user.getAssociatedIdentifier(),user.getUserUid());
+        final var token = jwtTokenProvider.generateToken(user.getUsername(), user.getRole(),user.getAssociatedIdentifier(),user.getEmail(),user.getUserUid());
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .username(user.getUsername())
