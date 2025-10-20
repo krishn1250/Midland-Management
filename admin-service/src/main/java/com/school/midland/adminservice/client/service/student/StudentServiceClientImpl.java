@@ -21,9 +21,11 @@ public class StudentServiceClientImpl implements  StudentServiceClient{
     private String userServiceBaseUrl;
 
     @Override
-    public StudentDto createUserRest(StudentDto studentDto) {
-
-        return restTemplate.postForObject(userServiceBaseUrl + "users/student/create", studentDto, StudentDto.class);
+    public boolean createUserRest(StudentDto studentDto) {
+    HttpHeaders header=new HttpHeaders();
+    header.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<StudentDto> entity=new HttpEntity<>(studentDto,header);
+        return restTemplate.postForObject(userServiceBaseUrl + "users/student/create", studentDto, Boolean.class);
     }
     public List<StudentDto> getAllStudents() {
         ResponseEntity<StudentDto[]> response = restTemplate.getForEntity(
@@ -56,9 +58,9 @@ public class StudentServiceClientImpl implements  StudentServiceClient{
         return response.getBody();
     }
 
-    public boolean deleteStudent(String admissionNumber) {
+    public boolean deleteStudent(String email) {
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                userServiceBaseUrl + "users/student/delete/" + admissionNumber,
+                userServiceBaseUrl + "users/student/delete/" + email,
                 HttpMethod.DELETE,
                 null,
                 Boolean.class

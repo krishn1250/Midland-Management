@@ -49,7 +49,7 @@ public class AttendanceMapper {
 
           for(Attendance attendance:attendanceList){
               StudentAttendanceEntry studentAttendanceEntry=new StudentAttendanceEntry();
-              studentAttendanceEntry.setStudentUid(attendance.getStudentUid());
+//              studentAttendanceEntry.setStudentUid(attendance.getStudentUid());
               studentAttendanceEntry.setStatus(attendance.getStatus().name());
               studentAttendanceEntry.setAdmissionNumber(attendance.getAdmissionNumber());
               studentAttendanceEntry.setRemarks(attendance.getRemarks());

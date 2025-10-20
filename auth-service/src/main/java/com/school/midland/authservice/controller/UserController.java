@@ -35,7 +35,23 @@ private final UserService userService;
     }
 
 //    @PutMapping("/update/{username}")
+@GetMapping("/schoolEmail/{email}")
+public ResponseEntity<User> getBySchoolEmail(@PathVariable(name = "schoolEmail")String schoolEmail){
+    return ResponseEntity.ok(userService.getByEmail(schoolEmail));
+}
 
+    @DeleteMapping("/delete/{schoolEmail}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable(name = "schoolEmail") String schoolEmail,
+                                              @RequestHeader("Authorization") String token){
+        System.out.println("helo brosss");
+        boolean deleted=userService.deleteUser(schoolEmail);
+        System.out.println(deleted);
+        if (deleted) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+        }
+    }
 
 
 }

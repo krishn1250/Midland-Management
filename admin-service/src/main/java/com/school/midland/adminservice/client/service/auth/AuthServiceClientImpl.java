@@ -4,9 +4,7 @@
     import com.school.midland.adminservice.client.dtos.UserCreationResponse;
     import lombok.RequiredArgsConstructor;
     import org.springframework.beans.factory.annotation.Value;
-    import org.springframework.http.HttpEntity;
-    import org.springframework.http.HttpHeaders;
-    import org.springframework.http.MediaType;
+    import org.springframework.http.*;
     import org.springframework.security.core.Authentication;
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.stereotype.Service;
@@ -51,12 +49,35 @@
     //        String url = authServiceBaseUrl + "users/get/" + username; // append username
     //        return restTemplate.getForObject(url, UserCreationResponse.class);
     //    }
-        @Override
-     public UserCreationResponse getbyuserName(String username) {
+    public boolean deleteUser(String schoolEmail,String authHeader){
+        HttpHeaders headers=new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            headers.set("Authorization", authHeader);
+        }
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<Boolean> response = restTemplate.exchange(
+                authServiceBaseUrl + "users/delete/" + schoolEmail,
+                HttpMethod.DELETE,
+                entity,
+                Boolean.class
+        );
+        return response.getBody()!=null && response.getBody();
+    }
+
+        public UserCreationResponse getbyuserName(String username) {
             return restTemplate.getForObject(
                     authServiceBaseUrl + "users/get/" + username,
                     UserCreationResponse.class
             );
         }
+        public UserCreationResponse getByEmail(String email) {
+            return restTemplate.getForObject(
+                    authServiceBaseUrl + "users/schoolEmail/" + email,
+                    UserCreationResponse.class
+            );
+        }
+
+
 
     }

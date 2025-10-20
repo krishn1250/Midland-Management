@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface StudentServiceClient {
-    StudentDto createUserRest(@RequestBody StudentDto userCreationRequest);
-    public boolean deleteStudent(String admissionNumber);
+    boolean createUserRest(@RequestBody StudentDto userCreationRequest);
+    public boolean deleteStudent(String email);
     public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
     public StudentDto getByAdmissionNumber(String admissionNumber);
     public List<StudentDto> getAllStudents();

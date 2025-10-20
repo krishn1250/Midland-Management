@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public  class StudentAttendanceEntry {
-    private UUID studentUid;
+    private String  email;
     private String admissionNumber;
 //    private String rollNo;
 //    private String fullName;

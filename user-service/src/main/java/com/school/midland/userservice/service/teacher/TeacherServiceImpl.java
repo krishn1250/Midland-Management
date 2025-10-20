@@ -21,7 +21,7 @@
         private final TeacherRepository teacherRepository;
 
         @Override
-        public TeacherDto createTeacher(TeacherDto teacherDto) {
+        public boolean createTeacher(TeacherDto teacherDto) {
             if (teacherDto == null) {
                 throw new UserException("Fill the details", HttpStatus.BAD_REQUEST);
             }
@@ -38,7 +38,8 @@
 
             final Teacher entity = TeacherMapper.toEntity(teacherDto);
             final Teacher save = teacherRepository.save(entity);
-            return TeacherMapper.toDto(save);
+
+            return save!=null;
         }
 
         @Override
@@ -51,10 +52,10 @@
         }
 
         @Override
-        public TeacherDto getTeacherByUid(UUID uid) {
-            if (uid == null) throw new UserException("Teacher UID cannot be null", HttpStatus.BAD_REQUEST);
-            Optional<Teacher> byUid = teacherRepository.findByTeacherUid(uid);
-            if (byUid.isEmpty()) throw new UserException("Teacher not found for UID " + uid, HttpStatus.NOT_FOUND);
+        public TeacherDto getTeacherByEmail(String  email) {
+            if (email == null) throw new UserException("Teacher UID cannot be null", HttpStatus.BAD_REQUEST);
+            Optional<Teacher> byUid = teacherRepository.findBySchoolEmail(email);
+            if (byUid.isEmpty()) throw new UserException("Teacher not found for UID " + email, HttpStatus.NOT_FOUND);
 
             return TeacherMapper.toDto(byUid.get());
         }
@@ -104,13 +105,19 @@
         }
 
         @Override
-        public Boolean deleteTeacher(String username) {
-            if (username == null) throw new UserException("Teacher ID cannot be null", HttpStatus.BAD_REQUEST);
-            Optional<Teacher> optionalTeacher = teacherRepository.findByUsername(username);
-            if (optionalTeacher.isEmpty()) {
-                throw new UserException("Teacher not found for ID " + username, HttpStatus.NOT_FOUND);
+        public Boolean deleteTeacher(String email) {
+            if (email == null) {
+                throw new UserException("Teacher email cannot be null", HttpStatus.BAD_REQUEST);
             }
-            return teacherRepository.deleteByUsername(username);
+
+            Optional<Teacher> optionalTeacher = teacherRepository.findBySchoolEmail(email);
+
+            if (optionalTeacher.isEmpty()) {
+                throw new UserException("Teacher not found for email: " + email, HttpStatus.NOT_FOUND);
+            }
+
+            teacherRepository.delete(optionalTeacher.get());
+            return true;
         }
 
         @Override

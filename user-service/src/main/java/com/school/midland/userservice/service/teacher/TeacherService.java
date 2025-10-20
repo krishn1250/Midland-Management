@@ -9,13 +9,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TeacherService {
-    TeacherDto createTeacher(TeacherDto teacherDto);
+    boolean createTeacher(TeacherDto teacherDto);
     TeacherDto getTeacherById(Long id);
-    TeacherDto getTeacherByUid(UUID uid);
+    TeacherDto getTeacherByEmail(String email);
     TeacherDto getTeacherByCode(String teacherCode);
     List<TeacherDto> getAllTeachers();
     TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto);
-    Boolean deleteTeacher(String username);
+    Boolean deleteTeacher(String email);
     List<TeacherDto> findByDepartment(String department);
     List<TeacherDto>  findByDesignation(String department);
     TeacherDto getByUsername(String username);

@@ -23,9 +23,9 @@ public class StudentController {
 
     //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<StudentDto>  createStudent(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<Boolean>  createStudent(@RequestBody StudentDto studentDto) {
         System.out.println("API HIT");
-        final var student = studentService.createStudent(studentDto);
+        final boolean student = studentService.createStudent(studentDto);
         return ResponseEntity.ok(student);
     }
 
@@ -58,13 +58,13 @@ public class StudentController {
     }
 //
 //    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{adm_no}")
-    public ResponseEntity<?> deleteStudent(@PathVariable("adm_no") String admissionNumber) {
-        Boolean dto=studentService.deleteStudentByAdmissionNumber(admissionNumber);
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<Boolean> deleteStudent(@PathVariable("email") String email) {
+        Boolean dto=studentService.deleteStudentBySchoolEmail(email);
         if(dto==false){
-            return ResponseEntity.badRequest().body("unable to delete user ");
+            return ResponseEntity.badRequest().body(false);
         }
-        return ResponseEntity.ok("deleted sucessfully"+dto);
+        return ResponseEntity.ok(dto);
     }
 //
 //    @PreAuthorize("hasRole('ADMIN')")

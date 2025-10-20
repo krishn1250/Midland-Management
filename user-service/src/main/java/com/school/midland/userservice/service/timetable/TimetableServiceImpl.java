@@ -2,11 +2,12 @@ package com.school.midland.userservice.service.timetable;
 
 import com.school.midland.commonlib.dtos.TimetableDto;
 import com.school.midland.commonlib.exception.UserException;
-
 import com.school.midland.userservice.mappers.TimetableMapper;
 import com.school.midland.userservice.models.Timetable;
 import com.school.midland.userservice.repository.TimetableRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,30 +22,40 @@ public class TimetableServiceImpl implements TimetableService {
 
     private final TimetableRepository timetableRepository;
     private final TimetableMapper timetableMapper;
+    private static final Logger log = LoggerFactory.getLogger(TimetableServiceImpl.class);
 
     @Override
     public TimetableDto createTimetable(TimetableDto timetableDto) {
+
         boolean exists = timetableRepository.existsByGradeLevelAndSectionAndDayOfWeekAndPeriodNumber(
                 timetableDto.getGradeLevel(),
                 timetableDto.getSection(),
                 timetableDto.getDayOfWeek(),
                 timetableDto.getPeriodNumber()
         );
-        timetableDto.setCreatedAt(LocalDateTime.now());
-        timetableDto.setUpdatedAt(LocalDateTime.now());
 
         if (exists) {
-            throw new RuntimeException("Timetable slot already exists for this class and period.");
+            throw new UserException(
+                    "Timetable slot already exists for this class, section, day, and period.",
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
-        Timetable saved = timetableRepository.save(timetableMapper.toEntity(timetableDto));
+        Timetable entity = timetableMapper.toEntity(timetableDto);
+        // Timestamps will be automatically handled by @CreationTimestamp and @UpdateTimestamp
+        Timetable saved = timetableRepository.save(entity);
+
+        log.info("Created timetable: {}-{}-{}-{}", saved.getGradeLevel(), saved.getSection(),
+                saved.getDayOfWeek(), saved.getPeriodNumber());
+
         return timetableMapper.toDto(saved);
     }
 
     @Override
     public List<TimetableDto> createTimetables(List<TimetableDto> timetableDtos) {
-        System.out.println(timetableDtos);
-        List<Timetable> filtered = timetableDtos.stream()
+        log.info("Received {} timetables to create", timetableDtos.size());
+
+        List<Timetable> entitiesToSave = timetableDtos.stream()
                 .filter(dto -> !timetableRepository.existsByGradeLevelAndSectionAndDayOfWeekAndPeriodNumber(
                         dto.getGradeLevel(),
                         dto.getSection(),
@@ -52,18 +63,15 @@ public class TimetableServiceImpl implements TimetableService {
                         dto.getPeriodNumber()
                 ))
                 .map(timetableMapper::toEntity)
-                .peek(dto -> {
-
-                    dto.setCreatedAt(LocalDateTime.now());
-                    dto.setUpdatedAt(LocalDateTime.now());
-                })
-
                 .collect(Collectors.toList());
 
-        System.out.println(filtered);
+        List<Timetable> saved = timetableRepository.saveAll(entitiesToSave);
 
-        List<Timetable> saved = timetableRepository.saveAll(filtered);
-        return saved.stream().map(timetableMapper::toDto).collect(Collectors.toList());
+        log.info("Successfully created {} timetables", saved.size());
+
+        return saved.stream()
+                .map(timetableMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -94,10 +102,11 @@ public class TimetableServiceImpl implements TimetableService {
     public String deleteTimetableById(Long id) {
         Optional<Timetable> timetableOpt = timetableRepository.findById(id);
         if (timetableOpt.isEmpty()) {
-           throw  new UserException("tiemtable not found", HttpStatus.BAD_REQUEST);
+            throw new UserException("Timetable not found", HttpStatus.NOT_FOUND);
         }
 
         timetableRepository.deleteById(id);
+        log.info("Deleted timetable with ID: {}", id);
         return "Deleted successfully";
     }
 }

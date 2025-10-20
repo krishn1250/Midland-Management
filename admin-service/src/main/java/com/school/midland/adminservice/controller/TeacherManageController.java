@@ -1,6 +1,7 @@
 package com.school.midland.adminservice.controller;
 
 
+import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.adminservice.service.student.StudentManageService;
 import com.school.midland.adminservice.service.teacher.TeacherManageService;
 import com.school.midland.commonlib.dtos.StudentDto;
@@ -18,8 +19,9 @@ public class TeacherManageController {
     private  final TeacherManageService teacherManageService;
 
     @PostMapping("/create")
-    public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto teacherDto) {
-        return ResponseEntity.ok(teacherManageService.createTeacher(teacherDto));
+    public ResponseEntity<UserCreationResponse> createTeacher(@RequestBody TeacherDto teacherDto,
+                                                              @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(teacherManageService.createTeacher(teacherDto,token));
     }
 
 
@@ -43,9 +45,9 @@ public class TeacherManageController {
     }
 
 
-    @DeleteMapping("/delete/{username}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable String username) {
-        boolean deleted = teacherManageService.deleteTeacher(username);
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<String> deleteTeacher(@PathVariable String email,@RequestHeader("Authorization") String token) {
+        boolean deleted = teacherManageService.deleteTeacher(email,token);
         return ResponseEntity.ok(deleted ? "Deleted Successfully" : "Not Found or Not Deleted");
     }
 

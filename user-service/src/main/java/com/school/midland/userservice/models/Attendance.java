@@ -34,6 +34,9 @@ public class Attendance {
     @Column(name = "admission_number", nullable = false)
     private String admissionNumber;
 
+    @Column(name = "school_email", nullable = false)
+    private String schoolEmail;
+
     @Column(name = "grade_level", nullable = false)
     private String gradeLevel;
 

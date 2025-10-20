@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface StudentService {
-    StudentDto createStudent(StudentDto studentDto);
+    boolean createStudent(StudentDto studentDto);
     StudentDto getStudentById(Long id);
     StudentDto getStudentByUid(UUID uid);
     StudentDto getStudentByAdmissionNumber(String admissionNumber);
     StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
-    boolean deleteStudentByAdmissionNumber(String  admissionNumber);
+    boolean deleteStudentBySchoolEmail(String  email);
     List<StudentDto> getAllStudents();
     List<StudentDto> getStudentsByGradeLevel(String gradeLevel);
     List<StudentDto> getStudentsByAcademicYear(String academicYear);

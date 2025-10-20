@@ -4,6 +4,7 @@ import com.school.midland.adminservice.client.dtos.UserCreationRequest;
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
 import com.school.midland.adminservice.client.service.teacher.TeacherServiceClient;
+import com.school.midland.adminservice.exception.AdminException;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import com.school.midland.commonlib.exception.UserException;
 import lombok.RequiredArgsConstructor;
@@ -21,27 +22,56 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
     private  final TeacherServiceClient teacherServiceClient;
 
     @Override
-    public TeacherDto createTeacher(TeacherDto teacherDto) {
-        System.out.println(teacherDto);
-        if(teacherDto==null || teacherDto.getTeacherCode()==null
-                || teacherDto.getUsername()==null || teacherDto.getSchoolEmail()==null
-        || teacherDto.getPhoneNumber()==null){            throw new UserException("fill the necessary details ", HttpStatus.BAD_REQUEST);
+    public UserCreationResponse createTeacher(TeacherDto teacherDto, String token) {
+        if (teacherDto == null || teacherDto.getTeacherCode() == null
+                || teacherDto.getUsername() == null || teacherDto.getSchoolEmail() == null
+                || teacherDto.getPhoneNumber() == null) {
+            throw new UserException("Fill the necessary details", HttpStatus.BAD_REQUEST);
         }
-        UserCreationRequest userCreationRequest=UserCreationRequest.builder()
-                .role("TEACHER")
-                .email(teacherDto.getSchoolEmail())
-                .associatedIdentifier(teacherDto.getTeacherCode())
-                .username(teacherDto.getUsername())
-                .password(teacherDto.getPassword())
-                .fullName(teacherDto.getFirstName()+" "+teacherDto.getLastName())
-//                .phoneNumber(teacherDto.getPhoneNumber())
-                .build();
-        final UserCreationResponse auth_user = authServiceClient.createUser(userCreationRequest);
-        if(auth_user.getUserUid()==null){
-            throw new UserException("failed to create user ", HttpStatus.BAD_REQUEST);
+
+        UserCreationResponse authUser = null;
+
+        try {
+            // Step 1: Build user creation request for Auth Service
+            UserCreationRequest userCreationRequest = UserCreationRequest.builder()
+                    .role("TEACHER")
+                    .email(teacherDto.getSchoolEmail())
+                    .associatedIdentifier(teacherDto.getTeacherCode())
+                    .username(teacherDto.getUsername())
+                    .password(teacherDto.getPassword())
+                    .fullName(teacherDto.getFirstName() + " " + teacherDto.getLastName())
+                    .phoneNumber(teacherDto.getPhoneNumber())
+                    .build();
+
+            // Step 2: Create user in Auth Service
+            authUser = authServiceClient.createUser(userCreationRequest);
+            if (authUser.getUserUid() == null) {
+                throw new UserException("Failed to create user in Auth Service", HttpStatus.BAD_REQUEST);
+            }
+
+            // Step 3: Link Teacher UID and create in Teacher Service
+            teacherDto.setTeacherUid(authUser.getUserUid());
+            boolean teacherCreated = teacherServiceClient.createUserRest(teacherDto);
+
+            if (!teacherCreated) {
+                // Step 4: Rollback user creation in Auth Service
+                authServiceClient.deleteUser(authUser.getEmail(), token);
+                throw new UserException("Failed to create teacher in Teacher Service", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return authUser;
+        } catch (Exception e) {
+            // Step 5: Handle partial failure cleanup
+            if (authUser != null && authUser.getEmail() != null) {
+                try {
+                    authServiceClient.deleteUser(authUser.getEmail(), token);
+                } catch (Exception rollbackEx) {
+                    System.err.println("⚠️ Rollback failed for user: " + authUser.getEmail());
+                }
+            }
+
+            throw new UserException("Teacher creation failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        teacherDto.setTeacherUid(auth_user.getUserUid());
-        return teacherServiceClient.createUserRest(teacherDto);
     }
 
     @Override
@@ -100,10 +130,32 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
     }
 
     @Override
-    public boolean deleteTeacher(String username) {
-        if (username== null) {
-            throw new UserException("Teacher ID cannot be null for deletion", HttpStatus.BAD_REQUEST);
+    public boolean deleteTeacher(String email, String token) {
+        boolean userDeleted = false;
+
+        if (email == null) {
+            throw new UserException("Teacher email cannot be null for deletion", HttpStatus.BAD_REQUEST);
         }
-        return teacherServiceClient.deleteTeacher(username);
+
+        try {
+            // Step 1: Delete teacher from teacher-service
+            boolean teacherDeleted = teacherServiceClient.deleteTeacher(email);
+
+            // Step 2: Delete corresponding user from auth-service
+            userDeleted = authServiceClient.deleteUser(email, token);
+
+            if (!teacherDeleted) {
+                throw new AdminException("Failed to delete teacher in teacher-service", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return true;
+        } catch (Exception e) {
+            if (userDeleted) {
+                System.err.println("⚠️ Teacher delete failed after user delete for email: " + email);
+            }
+            throw new AdminException("Delete operation failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 }

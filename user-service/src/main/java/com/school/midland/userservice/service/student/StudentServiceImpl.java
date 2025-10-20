@@ -27,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public StudentDto createStudent(StudentDto studentDto) {
+    public boolean createStudent(StudentDto studentDto) {
         if (studentDto == null ) {
             throw new UserException("fill the details",HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
         final Student student =studentRepository.save(model);
         final StudentDto dto = studentMapper.toDto(student);
         System.out.println(studentDto);
-        return dto;
+        return dto!=null;
     }
 
     @Override
@@ -99,13 +99,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean deleteStudentByAdmissionNumber(String admissionNumber) {
-        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
-        if (studentOpt.isEmpty()) {
-            throw  new UserException("student not found to update",HttpStatus.BAD_REQUEST);
-        }
+    public boolean deleteStudentBySchoolEmail(String email) {
+        Student student = studentRepository.findBySchoolEmail(email)
+                .orElseThrow(() -> new UserException("Student not found to delete", HttpStatus.BAD_REQUEST));
 
-        return  studentRepository.deleteByAdmissionNumber(admissionNumber);
+        studentRepository.delete(student);
+        return true;
     }
 
     @Override

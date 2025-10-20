@@ -1,6 +1,7 @@
 package com.school.midland.adminservice.client.service.teacher;
 
 
+import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface TeacherServiceClient {
-    TeacherDto createUserRest(@RequestBody TeacherDto userCreationRequest);
+    Boolean createUserRest(TeacherDto userCreationRequest);
     TeacherDto updateTeacherRest(String teacherCode,TeacherDto teacherDto);
     List<TeacherDto> getAllTeachersRest();
     TeacherDto getTeacherByCodeRest(String teacherCode);

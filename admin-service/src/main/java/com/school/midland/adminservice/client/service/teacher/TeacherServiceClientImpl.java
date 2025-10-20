@@ -1,8 +1,12 @@
 package com.school.midland.adminservice.client.service.teacher;
 
+import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,9 +23,11 @@ public class TeacherServiceClientImpl implements TeacherServiceClient{
     private String userServiceBaseUrl;
     
     @Override
-    public TeacherDto createUserRest(TeacherDto teacherDto) {
-
-        return restTemplate.postForObject(userServiceBaseUrl + "users/teachers/create", teacherDto, TeacherDto.class);
+    public Boolean createUserRest(TeacherDto teacherDto) {
+        HttpHeaders header=new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<TeacherDto> entity= new HttpEntity<>(teacherDto,header);
+        return restTemplate.postForObject(userServiceBaseUrl + "users/teachers/create", entity, Boolean.class);
     }
 
     @Override
@@ -62,8 +68,9 @@ public class TeacherServiceClientImpl implements TeacherServiceClient{
     }
 
     @Override
-    public boolean deleteTeacher(String username) {
-        restTemplate.delete(userServiceBaseUrl + "users/teachers/" + username);
+    public boolean deleteTeacher(String email) {
+        System.out.println("hii");
+        restTemplate.delete(userServiceBaseUrl + "users/teachers/delete/" + email);
         return true;
     }
 

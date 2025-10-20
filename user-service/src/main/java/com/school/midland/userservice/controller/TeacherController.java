@@ -20,8 +20,8 @@ public class TeacherController {
 
     // Create teacher
     @PostMapping("/create")
-    public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto teacherDto) {
-        TeacherDto saved = teacherService.createTeacher(teacherDto);
+    public ResponseEntity<Boolean> createTeacher(@RequestBody TeacherDto teacherDto) {
+        boolean saved = teacherService.createTeacher(teacherDto);
         return ResponseEntity.ok(saved);
     }
 
@@ -33,9 +33,9 @@ public class TeacherController {
     }
 
     // Get teacher by UID
-    @GetMapping("/uid/{uid}")
-    public ResponseEntity<TeacherDto> getByUid(@PathVariable UUID uid) {
-        TeacherDto teacher = teacherService.getTeacherByUid(uid);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<TeacherDto> getByUid(@PathVariable String email) {
+        TeacherDto teacher = teacherService.getTeacherByEmail(email);
         return ResponseEntity.ok(teacher);
     }
 
@@ -61,9 +61,10 @@ public class TeacherController {
     }
 
     // Delete teacher by id
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable String username) {
-        Boolean deleted = teacherService.deleteTeacher(username);
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<String> deleteTeacher(@PathVariable String email) {
+        System.out.println("hello bros");
+        Boolean deleted = teacherService.deleteTeacher(email);
         return ResponseEntity.ok(deleted ? "Deleted Successfully" : "Not Found or Not Deleted");
     }
 
