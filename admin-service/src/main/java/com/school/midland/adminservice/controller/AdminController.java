@@ -2,6 +2,7 @@ package com.school.midland.adminservice.controller;
 
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.adminservice.dtos.AdminDto;
+import com.school.midland.adminservice.dtos.AdminResponse;
 import com.school.midland.adminservice.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class AdminController {
 
     // ✅ Get admin details
     @GetMapping("/{username}")
-    public ResponseEntity<AdminDto> getAdminDetails(@PathVariable String  username) {
+    public ResponseEntity<AdminResponse> getAdminDetails(@PathVariable String  username) {
         // We’ll reuse getAllAdmins + filter OR create a getAdminByUid method in service
         return adminService.getAllAdmins().stream()
                 .filter(admin -> username.equals(admin.getUsername())) // If AdminDto has UID field
@@ -45,7 +46,7 @@ public class AdminController {
 
     // ✅ Get all admins
     @GetMapping("/all")
-    public ResponseEntity<List<AdminDto>> getAllAdmins() {
+    public ResponseEntity<List<AdminResponse>> getAllAdmins() {
         final var admins = adminService.getAllAdmins();
         return ResponseEntity.ok(admins);
     }

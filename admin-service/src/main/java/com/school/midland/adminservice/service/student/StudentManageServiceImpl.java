@@ -97,6 +97,7 @@ public class StudentManageServiceImpl implements  StudentManageService{
 
     @Override
     public StudentDto getByAdmissionNumber(String admissionNumber) {
+
         return studentServiceClient.getByAdmissionNumber(admissionNumber);
     }
 

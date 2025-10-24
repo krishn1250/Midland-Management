@@ -4,6 +4,7 @@
     import com.school.midland.adminservice.client.dtos.UserCreationResponse;
     import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
     import com.school.midland.adminservice.dtos.AdminDto;
+    import com.school.midland.adminservice.dtos.AdminResponse;
     import com.school.midland.adminservice.mapper.AdminMapper;
     import com.school.midland.adminservice.models.Admin;
     import com.school.midland.adminservice.repository.AdminRepository;
@@ -55,10 +56,10 @@
         }
 
         @Override
-        public AdminDto getAdmin(String username) {
+        public AdminResponse getAdmin(String username) {
             Admin admin = adminRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("Admin not found"));
-            return mapToDto(admin);
+            return mapToDtoResponse(admin);
         }
 
 
@@ -66,9 +67,9 @@
 
 
         @Override
-        public List<AdminDto> getAllAdmins() {
+        public List<AdminResponse> getAllAdmins() {
             return adminRepository.findAll().stream()
-                    .map(this::mapToDto)
+                    .map(this::mapToDtoResponse)
                     .collect(Collectors.toList());
         }
         @Override
@@ -100,6 +101,17 @@
                     .email(admin.getEmail())
                     .phoneNumber(admin.getPhoneNumber())
                     .designation(admin.getDesignation())
+                    .schoolCode(admin.getSchoolCode())
+                    .build();
+        }
+        private AdminResponse mapToDtoResponse(Admin admin){
+            return AdminResponse.builder()
+                    .fullName(admin.getFullName())
+                    .username(admin.getUsername())
+                    .email(admin.getEmail())
+                    .phoneNumber(admin.getPhoneNumber())
+                    .designation(admin.getDesignation())
+                    .schoolCode(admin.getSchoolCode())
                     .build();
         }
 
