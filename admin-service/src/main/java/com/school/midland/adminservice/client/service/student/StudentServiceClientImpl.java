@@ -1,5 +1,6 @@
 package com.school.midland.adminservice.client.service.student;
 
+import com.school.midland.adminservice.client.service.student.dto.StudentResponseDto;
 import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.commonlib.exception.AdminException;
 import lombok.RequiredArgsConstructor;
@@ -43,16 +44,16 @@ public class StudentServiceClientImpl implements  StudentServiceClient{
         );
     }
 
-    public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto) {
+    public StudentResponseDto updateStudent(String email, StudentDto updatedDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<StudentDto> request = new HttpEntity<>(updatedDto, headers);
 
-        ResponseEntity<StudentDto> response = restTemplate.exchange(
-                userServiceBaseUrl + "users/student/update/" + admissionNumber,
+        ResponseEntity<StudentResponseDto> response = restTemplate.exchange(
+                userServiceBaseUrl + "users/student/update/" + email,
                 HttpMethod.PUT,
                 request,
-                StudentDto.class
+                StudentResponseDto.class
         );
 
         return response.getBody();

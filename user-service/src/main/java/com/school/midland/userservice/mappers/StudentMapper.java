@@ -1,6 +1,7 @@
 package com.school.midland.userservice.mappers;
 
 import com.school.midland.commonlib.dtos.StudentDto;
+import com.school.midland.userservice.dto.student.StudentResponseDto;
 import com.school.midland.userservice.models.Student;
 import org.springframework.stereotype.Component;
 
@@ -12,14 +13,18 @@ public class StudentMapper {
 
     public  Student toModel(StudentDto studentDto){
         if (studentDto == null) return null;
+        String parts[]={};
+        if(studentDto.getFullName()!=null) {
+            parts = studentDto.getFullName().trim().split("\\s+", 2);
+        }
 
         return Student.builder()
                 .studentUid(studentDto.getStudentUid()!=null ? studentDto.getStudentUid() : UUID.randomUUID())
                 .username(studentDto.getUsername())
                 .admissionNumber(studentDto.getAdmissionNumber())
                 .rollNo(studentDto.getRollNo())
-                .firstName(studentDto.getFirstName())
-                .lastName(studentDto.getLastName())
+                .firstName(parts.length>0?parts[0]:"")
+                .lastName(parts.length>1?parts[1]:"")
                 .fullName(studentDto.getFullName())
                 .gender(studentDto.getGender())
                 .dateOfBirth(studentDto.getDateOfBirth())
@@ -52,9 +57,50 @@ public class StudentMapper {
 
     public StudentDto toDto(Student student) {
         if (student == null) return null;
+        String parts[]={};
 
         return StudentDto.builder()
                 .studentUid(student.getStudentUid())
+                .username(student.getUsername())
+                .admissionNumber(student.getAdmissionNumber())
+                .rollNo(student.getRollNo())
+                .firstName(student.getFirstName())
+                .lastName(student.getLastName())
+                .fullName(student.getFullName())
+                .gender(student.getGender())
+                .dateOfBirth(student.getDateOfBirth())
+                .bloodGroup(student.getBloodGroup())
+                .nationality(student.getNationality())
+                .motherTongue(student.getMotherTongue())
+                .languagePreference(student.getLanguagePreference())
+                .gradeLevel(student.getGradeLevel())
+                .section(student.getSection())
+                .academicYear(student.getAcademicYear())
+                .admissionDate(student.getAdmissionDate())
+                .status(student.getStatus())
+                .profileImage(student.getProfileImage())
+                .address(student.getAddress())
+                .city(student.getCity())
+                .state(student.getState())
+                .country(student.getCountry())
+                .pinCode(student.getPinCode())
+                .phoneNumber(student.getPhoneNumber())
+                .schoolEmail(student.getSchoolEmail())
+                .personalEmail(student.getPersonalEmail())
+                .guardianName(student.getGuardianName())
+                .guardianRelation(student.getGuardianRelation())
+                .guardianContact(student.getGuardianContact())
+                .schoolCode(student.getSchoolCode())
+                .createdAt(student.getCreatedAt())
+                .updatedAt(student.getUpdatedAt())
+                .build();
+    }
+
+    public StudentResponseDto toReponseDto(Student student){
+        if (student == null) return null;
+
+        return StudentResponseDto.builder()
+
                 .username(student.getUsername())
                 .admissionNumber(student.getAdmissionNumber())
                 .rollNo(student.getRollNo())

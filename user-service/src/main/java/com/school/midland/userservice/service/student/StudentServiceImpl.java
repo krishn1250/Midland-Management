@@ -2,6 +2,7 @@ package com.school.midland.userservice.service.student;
 
 import com.school.midland.commonlib.exception.UserException;
 import com.school.midland.commonlib.dtos.StudentDto;
+import com.school.midland.userservice.dto.student.StudentResponseDto;
 import com.school.midland.userservice.mappers.StudentMapper;
 import com.school.midland.userservice.models.Student;
 import com.school.midland.userservice.repository.StudentRepository;
@@ -12,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -73,28 +71,36 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto) {
-        Optional<Student> existingOpt = studentRepository.findByAdmissionNumber(admissionNumber);
+    public StudentResponseDto updateStudent(String email, StudentDto updatedDto) {
+        Optional<Student> existingOpt = studentRepository.findBySchoolEmail(email);
         if (existingOpt.isEmpty()) {
             throw  new UserException("student not found to update",HttpStatus.BAD_REQUEST);
         }
         Student student = existingOpt.get();
-        student.setFullName(updatedDto.getFullName());
-        student.setAcademicYear(updatedDto.getAcademicYear());
-        student.setAddress(updatedDto.getAddress());
-        student.setGradeLevel(updatedDto.getGradeLevel());
-        student.setCity(updatedDto.getCity());
-        student.setBloodGroup(updatedDto.getBloodGroup());
-        student.setDateOfBirth(updatedDto.getDateOfBirth());
-        student.setCountry(updatedDto.getCountry());
-        student.setGender(updatedDto.getGender());
-        student.setAdmissionDate(updatedDto.getAdmissionDate());
-        student.setGuardianRelation(updatedDto.getGuardianRelation());
-        student.setLanguagePreference(updatedDto.getLanguagePreference());
-        student.setPhoneNumber(updatedDto.getPhoneNumber());
-        student.setSchoolEmail(updatedDto.getSchoolEmail());
-        student.setUpdatedAt(LocalDateTime.now());
-        StudentDto dto=studentMapper.toDto(studentRepository.save(student));
+
+        if (updatedDto.getFullName() != null && !updatedDto.getFullName().trim().isEmpty()) {
+            String[] parts = updatedDto.getFullName().trim().split("\\s+", 2);
+            student.setFullName(updatedDto.getFullName());
+            student.setFirstName(parts[0]);
+            student.setLastName(parts.length > 1 ? parts[1] : "");
+        }
+
+
+        if (updatedDto.getAcademicYear() != null) student.setAcademicYear(updatedDto.getAcademicYear());
+        if (updatedDto.getAddress() != null) student.setAddress(updatedDto.getAddress());
+        if (updatedDto.getGradeLevel() != null) student.setGradeLevel(updatedDto.getGradeLevel());
+        if (updatedDto.getCity() != null) student.setCity(updatedDto.getCity());
+        if (updatedDto.getBloodGroup() != null) student.setBloodGroup(updatedDto.getBloodGroup());
+        if (updatedDto.getDateOfBirth() != null) student.setDateOfBirth(updatedDto.getDateOfBirth());
+        if (updatedDto.getCountry() != null) student.setCountry(updatedDto.getCountry());
+        if (updatedDto.getGender() != null) student.setGender(updatedDto.getGender());
+//        if (updatedDto.getAdmissionDate() != null) student.setAdmissionDate(updatedDto.getAdmissionDate());
+        if (updatedDto.getGuardianRelation() != null) student.setGuardianRelation(updatedDto.getGuardianRelation());
+        if (updatedDto.getLanguagePreference() != null) student.setLanguagePreference(updatedDto.getLanguagePreference());
+        if (updatedDto.getPhoneNumber() != null) student.setPhoneNumber(updatedDto.getPhoneNumber());
+        if (updatedDto.getSchoolEmail() != null) student.setSchoolEmail(updatedDto.getSchoolEmail());
+        if (updatedDto.getPersonalEmail()!=null) student.setPersonalEmail(updatedDto.getPersonalEmail());
+        StudentResponseDto dto=studentMapper.toReponseDto(studentRepository.save(student));
         return dto ;
     }
 

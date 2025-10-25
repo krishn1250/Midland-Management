@@ -2,6 +2,7 @@ package com.school.midland.userservice.controller;
 
 
 import com.school.midland.commonlib.dtos.StudentDto;
+import com.school.midland.userservice.dto.student.StudentResponseDto;
 import com.school.midland.userservice.models.Student;
 import com.school.midland.userservice.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +52,9 @@ public class StudentController {
     }
 //
 //    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update/{admissionNumber}")
-    public ResponseEntity<StudentDto> updateStudent(@PathVariable String admissionNumber, @RequestBody StudentDto updatedDto) {
-        StudentDto dto=studentService.updateStudent(admissionNumber,updatedDto);
+    @PutMapping("/update/{email}")
+    public ResponseEntity<StudentResponseDto> updateStudent(@PathVariable String email, @RequestBody StudentDto updatedDto) {
+        StudentResponseDto dto=studentService.updateStudent(email,updatedDto);
         return ResponseEntity.ok(dto);
     }
 //

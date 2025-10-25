@@ -4,6 +4,7 @@ package com.school.midland.authservice.controller;
 import com.school.midland.authservice.constants.AuthApi;
 import com.school.midland.authservice.dto.response.UserCreationResponse;
 import com.school.midland.authservice.dto.user.UserDto;
+import com.school.midland.authservice.dto.user.UserUpdateDto;
 import com.school.midland.authservice.models.User;
 import com.school.midland.authservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -50,9 +51,9 @@ public ResponseEntity<UserDto> getBySchoolEmail(@PathVariable(name = "email")Str
     }
 
     @PutMapping("/update/{email}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable String email,
-                                           @RequestBody User updatedUser) {
-        UserDto user = userService.updateUser(email, updatedUser);
+    public ResponseEntity<UserUpdateDto> updateUser(@PathVariable String email,
+                                           @RequestBody UserUpdateDto updatedUser) {
+        UserUpdateDto user = userService.updateUser(email, updatedUser);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }

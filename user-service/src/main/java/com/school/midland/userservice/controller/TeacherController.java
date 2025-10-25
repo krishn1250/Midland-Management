@@ -1,6 +1,7 @@
 package com.school.midland.userservice.controller;
 
 import com.school.midland.commonlib.dtos.TeacherDto;
+import com.school.midland.userservice.dto.teacher.TeacherResponseDto;
 import com.school.midland.userservice.models.Teacher;
 import com.school.midland.userservice.service.teacher.TeacherService;
 import feign.Response;
@@ -54,9 +55,9 @@ public class TeacherController {
     }
 
     // Update teacher by teacher code
-    @PutMapping("/update/{code}")
-    public ResponseEntity<TeacherDto> updateTeacher(@PathVariable String code, @RequestBody TeacherDto dto) {
-        TeacherDto updated = teacherService.updateTeacher(code, dto);
+    @PutMapping("/update/{email}")
+    public ResponseEntity<TeacherResponseDto> updateTeacher(@PathVariable String email, @RequestBody TeacherDto dto) {
+        TeacherResponseDto updated = teacherService.updateTeacher(email, dto);
         return ResponseEntity.ok(updated);
     }
 

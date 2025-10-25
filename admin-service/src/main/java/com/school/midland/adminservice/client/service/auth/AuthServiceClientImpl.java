@@ -55,10 +55,10 @@
         }
 
         @Override
-        public UserDto updateUser(String email,UserDto updatedUser) {
+        public UserDto updateUser(String email,UserCreationRequest updatedUser) {
             HttpHeaders header=new HttpHeaders();
             header.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<UserDto> entity=new HttpEntity<>(updatedUser,header);
+            HttpEntity<UserCreationRequest> entity=new HttpEntity<>(updatedUser,header);
             ResponseEntity<UserDto> response = restTemplate.exchange(
                     authServiceBaseUrl + "users/update/{schoolEmail}",
                     HttpMethod.PUT,

@@ -1,13 +1,13 @@
 package com.school.midland.adminservice.client.service.teacher;
 
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.service.student.dto.StudentResponseDto;
+import com.school.midland.adminservice.client.service.teacher.dto.TeacherResponseDto;
+import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,9 +31,19 @@ public class TeacherServiceClientImpl implements TeacherServiceClient{
     }
 
     @Override
-    public TeacherDto updateTeacherRest(String teacherCode,TeacherDto teacherDto) {
-        restTemplate.put(userServiceBaseUrl + "users/teachers/update/" + teacherCode, teacherDto);
-        return  teacherDto;
+    public TeacherResponseDto updateTeacherRest(String email, TeacherDto teacherDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<TeacherDto> request = new HttpEntity<>(teacherDto, headers);
+
+        ResponseEntity<TeacherResponseDto> response = restTemplate.exchange(
+                userServiceBaseUrl + "users/teachers/update/" + email,
+                HttpMethod.PUT,
+                request,
+                TeacherResponseDto.class
+        );
+
+        return response.getBody();
     }
 
     @Override

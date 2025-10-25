@@ -99,6 +99,7 @@
                 admin.setSchoolCode(dto.getSchoolCode());
             }
 
+
             admin.setUpdatedAt(LocalDateTime.now());
 
             UserDto user = authServiceClient.getByEmail(email);
@@ -106,15 +107,14 @@
                 throw new UserException("user not found", HttpStatus.NOT_FOUND);
             }
 
-            if (dto.getFullName() != null) {
-                user.setFullName(dto.getFullName());
-            }
-            if (dto.getPhoneNumber() != null) {
-                user.setPhoneNumber(dto.getPhoneNumber());
-            }
+            UserCreationRequest userClient=UserCreationRequest.builder()
+                            .fullName(dto.getFullName())
+                                    .email(dto.getEmail())
+                                            .password(dto.getPassword())
+                                                    .phoneNumber(dto.getPhoneNumber())
+                                                            .build();
 
-
-            authServiceClient.updateUser(email, user);
+            authServiceClient.updateUser(email, userClient);
 
             return adminMapper.mapToDtoResponse(adminRepository.save(admin));
         }

@@ -16,10 +16,12 @@ import java.util.UUID;
 public class TeacherDto {
     private String username;
     private UUID   teacherUid;
-    private String teacherCode;
     private String firstName;
-    private String password;
     private String lastName;
+    private String teacherCode;
+    private String fullName;
+    private String password;
+
     private String personalEmail;
     private String phoneNumber;
     private String qualification;
@@ -29,4 +31,7 @@ public class TeacherDto {
     private String profileImage;
     private String schoolEmail;
     private String schoolCode;
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AuthServiceClient {
     UserCreationResponse createUser(@RequestBody UserCreationRequest userCreationRequest);
 UserDto getbyuserName(String username);
-    public UserDto updateUser(String email,UserDto updatedUser);
+    public UserDto updateUser(String email,UserCreationRequest updatedUser);
     public UserDto getByEmail(String email);
     public boolean deleteUser(String schoolEmail,String authHeader);
 

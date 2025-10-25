@@ -31,8 +31,10 @@ public class Teacher {
     @Column(nullable = false, unique = true)
     private String teacherCode;
 
-    @Column(nullable = false)
+
     private String firstName;
+    @Column(name = "full_name", nullable = false, columnDefinition = "varchar(255) default ''")
+    private String fullName;
 
     private String lastName;
 

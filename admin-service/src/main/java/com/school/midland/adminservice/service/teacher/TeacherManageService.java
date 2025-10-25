@@ -1,6 +1,7 @@
 package com.school.midland.adminservice.service.teacher;
 
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.service.teacher.dto.TeacherResponseDto;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +16,6 @@ public interface TeacherManageService {
     TeacherDto getTeacherByUsername(String username);
     TeacherDto getTeacherByCode(String teacherCode);
     List<TeacherDto> getAllTeachers();
-    TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto);
+    public TeacherResponseDto updateTeacher(String email, TeacherDto updatedDto, String token);
     boolean deleteTeacher(String email,String token);
 }

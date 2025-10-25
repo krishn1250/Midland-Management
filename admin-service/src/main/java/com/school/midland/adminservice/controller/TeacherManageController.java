@@ -2,6 +2,7 @@ package com.school.midland.adminservice.controller;
 
 
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.service.teacher.dto.TeacherResponseDto;
 import com.school.midland.adminservice.service.student.StudentManageService;
 import com.school.midland.adminservice.service.teacher.TeacherManageService;
 import com.school.midland.commonlib.dtos.StudentDto;
@@ -37,11 +38,12 @@ public class TeacherManageController {
     }
 
 
-    @PutMapping("/update/{teacherCode}")
-    public ResponseEntity<TeacherDto> updateTeacher(
-            @PathVariable String teacherCode,
-            @RequestBody TeacherDto teacherDto) {
-        return ResponseEntity.ok(teacherManageService.updateTeacher(teacherCode, teacherDto));
+    @PutMapping("/update/{email}")
+    public ResponseEntity<TeacherResponseDto> updateTeacher(
+            @PathVariable String email,
+            @RequestBody TeacherDto teacherDto,
+    @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(teacherManageService.updateTeacher(email, teacherDto,token));
     }
 
 

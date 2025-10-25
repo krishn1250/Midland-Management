@@ -1,6 +1,7 @@
 package com.school.midland.authservice.service.user;
 
 import com.school.midland.authservice.dto.user.UserDto;
+import com.school.midland.authservice.dto.user.UserUpdateDto;
 import com.school.midland.authservice.exception.AuthException;
 import com.school.midland.authservice.mapper.UserMapper;
 import com.school.midland.authservice.models.User;
@@ -50,7 +51,7 @@ private final UserMapper userMapper;
     }
 
     @Override
-    public UserDto updateUser(String email, User updatedUser) {
+    public UserUpdateDto updateUser(String email, UserUpdateDto updatedUser) {
        Optional<User> user1= userRepository.findByEmail(email)
                 .map(user -> {
                     if(updatedUser.getFullName()!=null)
@@ -59,13 +60,15 @@ private final UserMapper userMapper;
                     user.setPhoneNumber(updatedUser.getPhoneNumber());
                     if(updatedUser.getPassword()!=null)
                     user.setPassword(updatedUser.getPassword());
+                    if(updatedUser.getEmail()!=null)
+                        user.setEmail(updatedUser.getEmail());
 
 
                     userRepository.save(user);
                     return user;
                 });
 
-        return userMapper.userToDto(user1.get());
+        return userMapper.userToUpdateDto(user1.get());
     }
 
 

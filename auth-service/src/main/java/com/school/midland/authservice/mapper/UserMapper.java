@@ -1,6 +1,7 @@
 package com.school.midland.authservice.mapper;
 
 import com.school.midland.authservice.dto.user.UserDto;
+import com.school.midland.authservice.dto.user.UserUpdateDto;
 import com.school.midland.authservice.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,16 @@ public class UserMapper {
                 .email(user.getEmail())
                 .role(user.getRole())
                 .fullName(user.getFullName())
+                .build();
+    }
+
+    public UserUpdateDto userToUpdateDto(User user){
+        return UserUpdateDto.builder()
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .fullName(user.getFullName())
+
                 .build();
     }
 }

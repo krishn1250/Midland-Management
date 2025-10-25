@@ -4,12 +4,14 @@ import com.school.midland.adminservice.client.dtos.UserCreationRequest;
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
 import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
 import com.school.midland.adminservice.client.service.teacher.TeacherServiceClient;
+import com.school.midland.adminservice.client.service.teacher.dto.TeacherResponseDto;
 import com.school.midland.adminservice.exception.AdminException;
 import com.school.midland.commonlib.dtos.TeacherDto;
 import com.school.midland.commonlib.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
                     .associatedIdentifier(teacherDto.getTeacherCode())
                     .username(teacherDto.getUsername())
                     .password(teacherDto.getPassword())
-                    .fullName(teacherDto.getFirstName() + " " + teacherDto.getLastName())
+                    .fullName(teacherDto.getFullName())
                     .phoneNumber(teacherDto.getPhoneNumber())
                     .build();
 
@@ -122,11 +124,23 @@ public class TeacherManageServiceImpl implements  TeacherManageService{
     }
 
     @Override
-    public TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto) {
-        if (teacherCode == null || teacherCode.isBlank()) {
-            throw new UserException("Teacher code must be provided for update", HttpStatus.BAD_REQUEST);
+    public TeacherResponseDto updateTeacher(String email, TeacherDto updatedDto, String token) {
+        try {
+            UserCreationRequest updatedUser = UserCreationRequest.builder()
+                    .fullName(updatedDto.getFullName())
+                    .phoneNumber(updatedDto.getPhoneNumber())
+                    .password(updatedDto.getPassword())
+                    .email(updatedDto.getSchoolEmail())
+                    .build();
+
+            authServiceClient.updateUser(email, updatedUser);
         }
-        return teacherServiceClient.updateTeacherRest(teacherCode, teacherDto);
+        catch (RestClientException e) {
+            authServiceClient.deleteUser(email, token);
+            throw new AdminException("user " + e.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return teacherServiceClient.updateTeacherRest(email, updatedDto);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.school.midland.userservice.service.student;
 
 import com.school.midland.commonlib.dtos.StudentDto;
+import com.school.midland.userservice.dto.student.StudentResponseDto;
 import com.school.midland.userservice.models.Student;
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +13,7 @@ public interface StudentService {
     StudentDto getStudentById(Long id);
     StudentDto getStudentByUid(UUID uid);
     StudentDto getStudentByAdmissionNumber(String admissionNumber);
-    StudentDto updateStudent(String admissionNumber, StudentDto updatedDto);
+    StudentResponseDto updateStudent(String admissionNumber, StudentDto updatedDto);
     boolean deleteStudentBySchoolEmail(String  email);
     List<StudentDto> getAllStudents();
     List<StudentDto> getStudentsByGradeLevel(String gradeLevel);

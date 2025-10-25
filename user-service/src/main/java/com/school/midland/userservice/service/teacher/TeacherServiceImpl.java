@@ -2,6 +2,7 @@
 
     import com.school.midland.commonlib.dtos.TeacherDto;
     import com.school.midland.commonlib.exception.UserException;
+    import com.school.midland.userservice.dto.teacher.TeacherResponseDto;
     import com.school.midland.userservice.mappers.TeacherMapper;
     import com.school.midland.userservice.models.Teacher;
     import com.school.midland.userservice.repository.TeacherRepository;
@@ -19,6 +20,7 @@
     public class TeacherServiceImpl implements TeacherService {
 
         private final TeacherRepository teacherRepository;
+        private final TeacherMapper teacherMapper;
 
         @Override
         public boolean createTeacher(TeacherDto teacherDto) {
@@ -36,7 +38,7 @@
                 throw new UserException("Teacher email already exists", HttpStatus.BAD_REQUEST);
             }
 
-            final Teacher entity = TeacherMapper.toEntity(teacherDto);
+            final Teacher entity = teacherMapper.toEntity(teacherDto);
             final Teacher save = teacherRepository.save(entity);
 
             return save!=null;
@@ -48,7 +50,7 @@
             Optional<Teacher> byId = teacherRepository.findById(id);
             if (byId.isEmpty()) throw new UserException("Teacher not found for ID " + id, HttpStatus.NOT_FOUND);
 
-            return TeacherMapper.toDto(byId.get());
+            return teacherMapper.toDto(byId.get());
         }
 
         @Override
@@ -57,7 +59,7 @@
             Optional<Teacher> byUid = teacherRepository.findBySchoolEmail(email);
             if (byUid.isEmpty()) throw new UserException("Teacher not found for UID " + email, HttpStatus.NOT_FOUND);
 
-            return TeacherMapper.toDto(byUid.get());
+            return teacherMapper.toDto(byUid.get());
         }
 
         @Override
@@ -66,7 +68,7 @@
             Optional<Teacher> byCode = teacherRepository.findByTeacherCode(teacherCode);
             if (byCode.isEmpty()) throw new UserException("Teacher not found for code " + teacherCode, HttpStatus.NOT_FOUND);
 
-            return TeacherMapper.toDto(byCode.get());
+            return teacherMapper.toDto(byCode.get());
         }
 
         @Override
@@ -74,34 +76,44 @@
             List<Teacher> teachers = teacherRepository.findAll();
             List<TeacherDto> teacherDtos = new ArrayList<>();
             for (Teacher teacher : teachers) {
-                teacherDtos.add(TeacherMapper.toDto(teacher));
+                teacherDtos.add(teacherMapper.toDto(teacher));
             }
             return teacherDtos;
         }
 
         @Override
-        public TeacherDto updateTeacher(String teacherCode, TeacherDto teacherDto) {
-            if (teacherCode == null || teacherDto == null) {
+        public TeacherResponseDto updateTeacher(String email, TeacherDto teacherDto) {
+            if (email == null || teacherDto == null) {
                 throw new UserException("Invalid update request", HttpStatus.BAD_REQUEST);
             }
 
-            Optional<Teacher> optionalTeacher = teacherRepository.findByTeacherCode(teacherCode);
+            Optional<Teacher> optionalTeacher = teacherRepository.findBySchoolEmail(email);
             if (optionalTeacher.isEmpty()) {
-                throw new UserException("Teacher not found for code " + teacherCode, HttpStatus.NOT_FOUND);
+                throw new UserException("Teacher not found for code " + email, HttpStatus.NOT_FOUND);
             }
 
             Teacher existingTeacher = optionalTeacher.get();
+            if (teacherDto.getFullName() != null && !teacherDto.getFullName().trim().isEmpty()) {
+                String[] parts = teacherDto.getFullName().trim().split("\\s+", 2);
+                existingTeacher.setFullName(teacherDto.getFullName());
+                existingTeacher.setFirstName(parts[0]);
+                existingTeacher.setLastName(parts.length > 1 ? parts[1] : "");
+            }
 
             // Update fields
-            existingTeacher.setFirstName(teacherDto.getFirstName());
-            existingTeacher.setLastName(teacherDto.getLastName());
+           existingTeacher.setFullName(teacherDto.getFullName());
+           existingTeacher.setQualification(teacherDto.getQualification());
+           existingTeacher.setPersonalEmail(teacherDto.getPersonalEmail());
+           existingTeacher.setProfileImage(teacherDto.getProfileImage());
+           existingTeacher.setSchoolCode(teacherDto.getSchoolCode());
             existingTeacher.setDepartment(teacherDto.getDepartment());
             existingTeacher.setDesignation(teacherDto.getDesignation());
             existingTeacher.setSchoolEmail(teacherDto.getSchoolEmail());
             existingTeacher.setPhoneNumber(teacherDto.getPhoneNumber());
 
-            Teacher updated = teacherRepository.save(existingTeacher);
-            return TeacherMapper.toDto(updated);
+
+              Teacher updated = teacherRepository.save(existingTeacher);
+            return teacherMapper.toResponseDto(updated);
         }
 
         @Override
@@ -129,7 +141,7 @@
             Optional<List<Teacher>> teachers = teacherRepository.findByDepartment(department);
             List<TeacherDto> dtos = new ArrayList<>();
             for (Teacher teacher : teachers.get()) {
-                dtos.add(TeacherMapper.toDto(teacher));
+                dtos.add(teacherMapper.toDto(teacher));
             }
             return dtos;
         }
@@ -143,7 +155,7 @@
             Optional<List<Teacher>> teachers = teacherRepository.findByDesignation(designation);
             List<TeacherDto> dtos = new ArrayList<>();
             for (Teacher teacher : teachers.get()) {
-                dtos.add(TeacherMapper.toDto(teacher));
+                dtos.add(teacherMapper.toDto(teacher));
             }
             return dtos;
         }
@@ -153,7 +165,7 @@
             if (username == null) throw new UserException("Teacher UID cannot be null", HttpStatus.BAD_REQUEST);
             Optional<Teacher> byUid = teacherRepository.findByUsername(username);
             if (byUid.isEmpty()) throw new UserException("Teacher not found for UID " + username, HttpStatus.NOT_FOUND);
-            return TeacherMapper.toDto(byUid.get());
+            return teacherMapper.toDto(byUid.get());
 
         }
     }

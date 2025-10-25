@@ -2,16 +2,20 @@ package com.school.midland.adminservice.service.student;
 
 import com.school.midland.adminservice.client.dtos.UserCreationRequest;
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.dtos.UserDto;
 import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
 import com.school.midland.adminservice.client.service.student.StudentServiceClient;
+import com.school.midland.adminservice.client.service.student.dto.StudentResponseDto;
 import com.school.midland.adminservice.exception.AdminException;
 import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.commonlib.exception.UserException;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
@@ -91,8 +95,25 @@ public class StudentManageServiceImpl implements  StudentManageService{
         }
     }
     @Override
-    public StudentDto updateStudent(String admissionNumber, StudentDto updatedDto) {
-        return studentServiceClient.updateStudent(admissionNumber, updatedDto);
+    public StudentResponseDto updateStudent(String email, StudentDto updatedDto, String token) {
+        try{
+            UserCreationRequest updatedUser= UserCreationRequest.builder()
+                    .fullName(updatedDto.getFullName())
+                    .phoneNumber(updatedDto.getPhoneNumber())
+                    .password(updatedDto.getPassword())
+                    .email(updatedDto.getSchoolEmail())
+                    .build();
+            authServiceClient.updateUser(email,updatedUser);
+        }
+        catch (RestClientException e){
+            authServiceClient.deleteUser(email,token);
+            throw  new AdminException("user "+e.getLocalizedMessage(),HttpStatus.NOT_FOUND);
+        }
+
+
+
+
+        return studentServiceClient.updateStudent(email, updatedDto);
     }
 
     @Override

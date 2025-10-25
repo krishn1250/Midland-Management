@@ -1,6 +1,7 @@
 package com.school.midland.adminservice.controller;
 
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.service.student.dto.StudentResponseDto;
 import com.school.midland.commonlib.dtos.StudentDto;
 import com.school.midland.adminservice.service.student.StudentManageService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,10 @@ return studentManageService.createStudent(studentDto,token);
         return studentManageService.deleteStudent(email,token);
     }
 
-    @PutMapping("/update/{admissionNumber}")
-    public StudentDto updateStudent(@PathVariable String admissionNumber, @RequestBody StudentDto updatedDto) {
-        return studentManageService.updateStudent(admissionNumber, updatedDto);
+    @PutMapping("/update/{email}")
+    public StudentResponseDto updateStudent(@PathVariable String email, @RequestBody StudentDto updatedDto,
+                                            @RequestHeader("Authorization") String token) {
+        return studentManageService.updateStudent(email, updatedDto,token);
     }
 
     @GetMapping("/{admissionNumber}")
