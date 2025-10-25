@@ -2,6 +2,7 @@ package com.school.midland.adminservice;
 
 import com.school.midland.adminservice.client.dtos.UserCreationRequest;
 import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+import com.school.midland.adminservice.client.dtos.UserDto;
 import com.school.midland.adminservice.client.service.auth.AuthServiceClient;
 
 import com.school.midland.adminservice.cons.Role;
@@ -26,7 +27,8 @@ public class AdminServiceApplication {
                                        AuthServiceClient authServiceClient) {
         return args -> {
             try {
-                UserCreationResponse response = null;
+                UserDto response = null;
+                UserCreationResponse response1=null;
                 try {
                     response = authServiceClient.getbyuserName("superadmin");
                     System.out.println(response);
@@ -44,12 +46,13 @@ public class AdminServiceApplication {
                             .phoneNumber("")
                             .associatedIdentifier("ADM")
                             .build();
-                    response = authServiceClient.createUser(request);
+                 response1 = authServiceClient.createUser(request);
                 }
 
-                UserCreationResponse finalResponse = response;
+                UserCreationResponse finalResponse = response1;
+
                 System.out.println(finalResponse);
-                adminRepository.findByUserUid(finalResponse.getUserUid())
+                adminRepository.findByEmail(finalResponse.getEmail())
                         .orElseGet(() -> {
                             Admin admin = Admin.builder()
                                     .userUid(finalResponse.getUserUid())

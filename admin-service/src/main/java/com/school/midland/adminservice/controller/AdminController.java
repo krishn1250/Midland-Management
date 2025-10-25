@@ -18,7 +18,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // ✅ Create admin
+
     @PostMapping("/create")
     public ResponseEntity<UserCreationResponse> createAdmin(@RequestBody AdminDto adminDto) {
         System.out.println("hello bros");
@@ -26,24 +26,23 @@ public class AdminController {
         return ResponseEntity.ok(admin);
     }
 
-    // ✅ Update admin
-    @PutMapping("/{adminUid}")
-    public ResponseEntity<AdminDto> updateAdmin(@PathVariable UUID adminUid, @RequestBody AdminDto adminDto) {
-        final var updatedAdmin = adminService.updateAdmin(adminUid, adminDto);
+
+    @PutMapping("/update/{email}")
+    public ResponseEntity<AdminResponse> updateAdmin(@PathVariable String email, @RequestBody AdminDto adminDto) {
+        final var updatedAdmin = adminService.updateAdmin(email, adminDto);
         return ResponseEntity.ok(updatedAdmin);
     }
 
-    // ✅ Get admin details
-    @GetMapping("/{username}")
-    public ResponseEntity<AdminResponse> getAdminDetails(@PathVariable String  username) {
-        // We’ll reuse getAllAdmins + filter OR create a getAdminByUid method in service
-        return adminService.getAllAdmins().stream()
-                .filter(admin -> username.equals(admin.getUsername())) // If AdminDto has UID field
-                .findFirst()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<AdminResponse> getAdminByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(adminService.getAdminByUsername(username));
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<AdminResponse> getAdminByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(adminService.getAdminByEmail(email));
+    }
     // ✅ Get all admins
     @GetMapping("/all")
     public ResponseEntity<List<AdminResponse>> getAllAdmins() {
@@ -52,23 +51,11 @@ public class AdminController {
     }
 
     // ✅ Delete admin (soft delete)
-    @DeleteMapping("/{adminUid}")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable UUID adminUid) {
-        adminService.deleteAdmin(adminUid);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("delete/{email}")
+    public ResponseEntity<String> deleteAdmin(@PathVariable String email,@RequestHeader("Authorization")String token) {
+        adminService.deleteAdmin(email,token);
+        return ResponseEntity.ok("deleted sucessfully");
     }
 
-    // ✅ Toggle active/inactive status
-//    @PutMapping("/change-status/{adminUid}")
-//    public ResponseEntity<String> toggleAdminStatus(@PathVariable UUID adminUid, @RequestParam boolean active) {
-//        // This assumes updateAdmin isActive logic is inside service
-//        // If not, create a new service method toggleStatus(adminUid, active)
-//        // For now we’ll handle inline
-//        try {
-//            AdminDto admin = adminService.updateAdmin(adminUid,
-//                    AdminDto.builder().isActive(active).build());
-//            return ResponseEntity.ok("Admin status updated to " + (active ? "Active" : "Inactive"));
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.notFound().build();
-//        }
+
     }

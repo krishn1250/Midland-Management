@@ -37,12 +37,12 @@ server:
 
 
 auth-service:
-  base-url: http://auth-service:8081/midland/
-#   base-url: http://localhost:8081/midland/
+#  base-url: http://auth-service:8081/midland/
+   base-url: http://localhost:8081/midland/
 
 user-service:
-  base-url: http://user-service:8083/midland/
-#  base-url: http://localhost:8083/midland/
+#  base-url: http://user-service:8083/midland/
+  base-url: http://localhost:8083/midland/
 
 jwt:
   secret: vvgUOp6+IKgzx9rEN0uxVHTcLONT/0kuuNWV8J5WNliudPE69d/nr6Di+txIAaglf1Gn3hjCBCjRmxH7xZPw8rQ==

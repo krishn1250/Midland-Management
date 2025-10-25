@@ -2,6 +2,7 @@ package com.school.midland.adminservice.mapper;
 
 
 import com.school.midland.adminservice.dtos.AdminDto;
+import com.school.midland.adminservice.dtos.AdminResponse;
 import com.school.midland.adminservice.models.Admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +39,18 @@ public class AdminMapper {
                 .email(admin.getEmail())
                 .phoneNumber(admin.getPhoneNumber())
                 .designation(admin.getDesignation())
+                .build();
+    }
+
+
+    public AdminResponse mapToDtoResponse(Admin admin){
+        return AdminResponse.builder()
+                .fullName(admin.getFullName())
+                .username(admin.getUsername())
+                .email(admin.getEmail())
+                .phoneNumber(admin.getPhoneNumber())
+                .designation(admin.getDesignation())
+                .schoolCode(admin.getSchoolCode())
                 .build();
     }
 }

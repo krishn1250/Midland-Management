@@ -3,6 +3,7 @@ package com.school.midland.authservice.controller;
 
 import com.school.midland.authservice.constants.AuthApi;
 import com.school.midland.authservice.dto.response.UserCreationResponse;
+import com.school.midland.authservice.dto.user.UserDto;
 import com.school.midland.authservice.models.User;
 import com.school.midland.authservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +18,21 @@ public class UserController {
 private final UserService userService;
 
     @GetMapping("/get/{username}")
-    public ResponseEntity<UserCreationResponse> getUser(@PathVariable String username) {
-        User user = userService.getUser(username);
+    public ResponseEntity<UserDto> getUser(@PathVariable String username) {
+        UserDto user = userService.getUser(username);
 
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
 
-        UserCreationResponse response = UserCreationResponse.builder()
-                .userUid(user.getUserUid())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build();
 
-        return ResponseEntity.ok(response);
+
+        return ResponseEntity.ok(user);
     }
 
 //    @PutMapping("/update/{username}")
 @GetMapping("/schoolEmail/{email}")
-public ResponseEntity<User> getBySchoolEmail(@PathVariable(name = "schoolEmail")String schoolEmail){
+public ResponseEntity<UserDto> getBySchoolEmail(@PathVariable(name = "email")String schoolEmail){
     return ResponseEntity.ok(userService.getByEmail(schoolEmail));
 }
 
@@ -51,6 +47,16 @@ public ResponseEntity<User> getBySchoolEmail(@PathVariable(name = "schoolEmail")
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
         }
+    }
+
+    @PutMapping("/update/{email}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable String email,
+                                           @RequestBody User updatedUser) {
+        UserDto user = userService.updateUser(email, updatedUser);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
 

@@ -2,6 +2,7 @@
 
     import com.school.midland.adminservice.client.dtos.UserCreationRequest;
     import com.school.midland.adminservice.client.dtos.UserCreationResponse;
+    import com.school.midland.adminservice.client.dtos.UserDto;
     import lombok.RequiredArgsConstructor;
     import org.springframework.beans.factory.annotation.Value;
     import org.springframework.http.*;
@@ -29,26 +30,7 @@
             HttpEntity<UserCreationRequest> request = new HttpEntity<>(userCreationRequest, headers);
             return restTemplate.postForObject(authServiceBaseUrl + "auth/register", request,  UserCreationResponse.class);
         }
-//@Override
-//public UserCreationResponse createUser(UserCreationRequest userCreationRequest) {
-//    HttpHeaders headers = new HttpHeaders();
-//    headers.setContentType(MediaType.APPLICATION_JSON);
-//    headers.setBearerAuth(token.replace("Bearer ", "")); // forward token
-//
-//    HttpEntity<UserCreationRequest> request = new HttpEntity<>(userCreationRequest, headers);
-//
-//    return restTemplate.postForObject(
-//            authServiceBaseUrl + "/midland/auth/register",
-//            request,
-//            UserCreationResponse.class
-//    );
-//}
 
-    //    @Override
-    //    public UserCreationResponse getbyuserName(String username) {
-    //        String url = authServiceBaseUrl + "users/get/" + username; // append username
-    //        return restTemplate.getForObject(url, UserCreationResponse.class);
-    //    }
     public boolean deleteUser(String schoolEmail,String authHeader){
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -65,16 +47,32 @@
         return response.getBody()!=null && response.getBody();
     }
 
-        public UserCreationResponse getbyuserName(String username) {
+        public UserDto getbyuserName(String username) {
             return restTemplate.getForObject(
                     authServiceBaseUrl + "users/get/" + username,
-                    UserCreationResponse.class
+                    UserDto.class
             );
         }
-        public UserCreationResponse getByEmail(String email) {
+
+        @Override
+        public UserDto updateUser(String email,UserDto updatedUser) {
+            HttpHeaders header=new HttpHeaders();
+            header.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<UserDto> entity=new HttpEntity<>(updatedUser,header);
+            ResponseEntity<UserDto> response = restTemplate.exchange(
+                    authServiceBaseUrl + "users/update/{schoolEmail}",
+                    HttpMethod.PUT,
+                    entity,
+                    UserDto.class,
+                    email // maps to {schoolEmail}
+            );
+            return response.getBody();
+        }
+
+        public UserDto getByEmail(String email) {
             return restTemplate.getForObject(
                     authServiceBaseUrl + "users/schoolEmail/" + email,
-                    UserCreationResponse.class
+                    UserDto.class
             );
         }
 

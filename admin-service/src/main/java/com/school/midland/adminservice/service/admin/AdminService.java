@@ -14,6 +14,9 @@ public interface AdminService {
    UserCreationResponse createAdmin(AdminDto dto);
     AdminResponse getAdmin(String username);
     List<AdminResponse> getAllAdmins();
-    AdminDto updateAdmin(UUID adminUid, AdminDto dto);
-    void deleteAdmin(UUID adminUid);
+    AdminResponse updateAdmin(String email, AdminDto dto);
+    AdminResponse getAdminByUsername(String username);
+
+    AdminResponse getAdminByEmail(String email);
+    void deleteAdmin(String email,String token);
 }
