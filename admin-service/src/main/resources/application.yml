@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: admin-service
+  profiles:
+    active: dev
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5434/students_db
+#    username: postgres
+#    password: password
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+
+
+#server:
+#  port: 8082
+
+
+
+
+#auth-service:
+#  base-url: http://auth-service:8081/midland/
+#
+#user-service:
+#  base-url: http://user-service:8083/midland/
+
+jwt:
+  secret: vvgUOp6+IKgzx9rEN0uxVHTcLONT/0kuuNWV8J5WNliudPE69d/nr6Di+txIAaglf1Gn3hjCBCjRmxH7xZPw8rQ==
+  expiration: 86400000
+
+#  security:
+#    user:
+#      name: disabled
+#      password: disabled
