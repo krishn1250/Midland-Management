@@ -116,6 +116,7 @@ public class StudentServiceImpl implements StudentService {
 
         if (updatedDto.getAcademicYear() != null) student.setAcademicYear(updatedDto.getAcademicYear());
         if (updatedDto.getAddress() != null) student.setAddress(updatedDto.getAddress());
+        if(updatedDto.getRollNo()!=null) student.setRollNo(updatedDto.getRollNo());
         if (updatedDto.getGradeLevel() != null) student.setGradeLevel(updatedDto.getGradeLevel());
         if (updatedDto.getCity() != null) student.setCity(updatedDto.getCity());
         if (updatedDto.getBloodGroup() != null) student.setBloodGroup(updatedDto.getBloodGroup());

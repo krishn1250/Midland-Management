@@ -22,5 +22,6 @@ public interface StudentRepository  extends JpaRepository<Student,Long> {
 Student findByUsernameAndAdmissionNumber(String username,String studentCode);
 boolean deleteByAdmissionNumber(String admissionNumber);
 boolean deleteBySchoolEmail(String email);
+    List<Student> findByAdmissionNumberIn(List<String> admissionNumbers);
 
 }

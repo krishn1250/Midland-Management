@@ -6,6 +6,7 @@ import com.school.midland.user.mappers.PageMapper;
 import com.school.midland.user.service.teacher.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class TeacherController {
 
     // Create teacher
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createTeacher(@RequestBody TeacherDto teacherDto) {
+    public ResponseEntity<Boolean> createTeacher(@Validated @RequestBody TeacherDto teacherDto) {
         Boolean saved = teacherService.createTeacher(teacherDto);
         return ResponseEntity.ok(saved);
     }
@@ -41,7 +42,7 @@ public class TeacherController {
 
     // Get teacher by teacher code
     @GetMapping("/code/{code}")
-    public ResponseEntity<TeacherDto> getByCode(@PathVariable String code) {
+    public ResponseEntity<TeacherDto> getByCode(@Validated @PathVariable String code) {
         TeacherDto teacher = teacherService.getTeacherByCode(code);
         return ResponseEntity.ok(teacher);
     }
@@ -65,10 +66,10 @@ public class TeacherController {
     }
 
     // Delete teacher by id
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTeacher(@PathVariable String schoolEmail) {
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<Boolean> deleteTeacher(@PathVariable(name = "email") String schoolEmail) {
         Boolean deleted = teacherService.deleteTeacher(schoolEmail);
-        return ResponseEntity.ok(deleted ? "Deleted Successfully" : "Not Found or Not Deleted");
+        return ResponseEntity.ok(deleted ? true : false);
     }
 
     // Find by department

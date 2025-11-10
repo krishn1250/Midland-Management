@@ -16,6 +16,7 @@
     import org.springframework.data.domain.Sort;
     import org.springframework.http.HttpStatus;
     import org.springframework.stereotype.Service;
+    import org.springframework.transaction.annotation.Transactional;
 
     import java.util.*;
 
@@ -63,7 +64,7 @@
 
         @Override
         public TeacherDto getTeacherByCode(String teacherCode) {
-            TeacherValidator.validateData(teacherCode);
+//            if(teacherCode==null || teacherCode.isEmpty())return
 
             Teacher teacher = teacherRepository.findByTeacherCode(teacherCode)
                     .orElseThrow(() -> new UserException("Teacher not found for code " + teacherCode, HttpStatus.NOT_FOUND));
@@ -86,8 +87,10 @@
 
         @Override
         public TeacherDto updateTeacher(String email, TeacherDto teacherDto) {
-            TeacherValidator.validateData(email);
-
+            TeacherValidator.validateUpdateTeacherData(teacherDto);
+            if(teacherDto==null){
+                throw new UserException("Atleast one field is required to update",HttpStatus.BAD_REQUEST);
+            }
             Optional<Teacher> optionalTeacher = teacherRepository.findBySchoolEmail(email);
             if (optionalTeacher.isEmpty()) {
                 throw new UserException("Teacher not found for code " + email, HttpStatus.NOT_FOUND);
@@ -116,7 +119,7 @@
             }
             return teacherMapper.toDto(updated);
         }
-
+        @Transactional
         @Override
         public Boolean deleteTeacher(String schoolEmail) {
             TeacherValidator.validateEmail(schoolEmail);
@@ -124,12 +127,13 @@
             if (optionalTeacher.isEmpty()) {
                 throw new UserException("Teacher not found for ID " + schoolEmail, HttpStatus.NOT_FOUND);
             }
-            return teacherRepository.deleteBySchoolEmail(schoolEmail);
+            teacherRepository.delete(optionalTeacher.get());
+            return true;
         }
 
         @Override
         public List<TeacherDto> findByDepartment(String department) {
-            TeacherValidator.validateData(department);
+//            TeacherValidator.validateData(department);
 
             Optional<List<Teacher>> teachers = teacherRepository.findByDepartment(department);
             List<TeacherDto> dtos = new ArrayList<>();
@@ -141,7 +145,7 @@
 
         @Override
         public List<TeacherDto> findByDesignation(String designation) {
-            TeacherValidator.validateData(designation);
+//            TeacherValidator.validateData(designation);
 
             List<Teacher> teachers = teacherRepository.findByDesignation(designation)
                     .orElse(Collections.emptyList());
@@ -155,7 +159,7 @@
 
         @Override
         public TeacherDto getByUsername(String username) {
-            TeacherValidator.validateData(username);
+//            TeacherValidator.validateData(username);
 
             Teacher teacher = teacherRepository.findByUsername(username)
                     .orElseThrow(() -> new UserException("Teacher not found for username " + username, HttpStatus.NOT_FOUND));

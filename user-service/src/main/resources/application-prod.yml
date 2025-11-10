@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/students_db_dev
+    url: jdbc:postgresql://postgres-service:5432/school_db
     username: postgres
-    password: password
+    password: midland
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
 
   jpa:
     hibernate:
